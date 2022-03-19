@@ -1,15 +1,13 @@
 const path = require('path');
+
 const config = {
-  alias: {
-    '@': path.resolve(__dirname, '..', 'src'),
-  },
-  projectName: 'yifanshang',
-  date: '2022-3-16',
+  projectName: 'hhh',
+  date: '2022-3-19',
   designWidth: 750,
   deviceRatio: {
-    '640': 2.34 / 2,
-    '750': 1,
-    '828': 1.81 / 2
+    640: 2.34 / 2,
+    750: 1,
+    828: 1.81 / 2
   },
   sourceRoot: 'src',
   outputRoot: 'dist',
@@ -21,6 +19,9 @@ const config = {
     ],
     options: {
     }
+  },
+  alias: {
+    '@': path.resolve(__dirname, '..', 'src'),
   },
   framework: 'react',
   mini: {
