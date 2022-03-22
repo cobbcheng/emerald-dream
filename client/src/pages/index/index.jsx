@@ -27,10 +27,15 @@ class Index extends Component {
         {
           skuList.map(item => {
             return (
-              <View className='item' key={item.id}>
-                <Text>{item.name}</Text>
-                <Text>{item.price}</Text>
-              </View>
+              <>
+                <View className='item' key={item.id}>
+                  <Text>{item.name}</Text>
+                  <Text>{item.price}</Text>
+                </View>
+                <View>
+                  <Text>盒子：{item.box_left}/{item.box_total}</Text>
+                </View>
+              </>
             )
           })
         }

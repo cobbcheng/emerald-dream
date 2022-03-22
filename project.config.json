@@ -1,7 +1,7 @@
 {
   "miniprogramRoot": "client/dist/",
   "cloudfunctionRoot": "cloud/functions/",
-  "projectname": "yifanshang",
+  "projectname": "emerald-dream",
   "description": "日贩一番赏",
   "appid": "wx56837d0de038457e",
   "setting": {
