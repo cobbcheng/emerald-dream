@@ -1,5 +1,5 @@
 {
-  "name": "login",
+  "name": "getSkuDetail",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,9 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "wx-server-sdk": "latest"
-  },
-  "devDependencies": {
-    "@types/node": "^17.0.21"
+    "wx-server-sdk": "~2.6.1"
   }
 }

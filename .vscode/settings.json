@@ -1,0 +1,89 @@
+{
+  "cSpell.words": [
+    "cobb",
+  ],
+  "files.eol": "\n",
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    {
+      "language": "vue",
+      "autoFix": true
+    },
+    {
+      "language": "typescript",
+      "autoFix": true
+    },
+    {
+      "language": "typescriptreact",
+      "autoFix": true
+    }
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+   // 一行最多 120 字符
+   "prettier.printWidth": 120,
+   // 使用 2 个空格缩进
+   "prettier.tabWidth": 2,
+   // 不使用缩进符，而使用空格
+   "prettier.useTabs": false,
+   // 行尾需要有分号
+   "prettier.semi": true,
+   // 使用单引号
+   "prettier.singleQuote": true,
+   // 对象的 key 仅在必要时用引号
+   "prettier.quoteProps": "as-needed",
+   // jsx 不使用单引号，而使用双引号
+   "prettier.jsxSingleQuote": false,
+   // 末尾需要有逗号
+   "prettier.trailingComma": "all",
+   // 大括号内的首尾需要空格
+   "prettier.bracketSpacing": true,
+   // jsx 标签的反尖括号需要换行
+   "prettier.jsxBracketSameLine": false,
+   // 箭头函数，只有一个参数的时候，也需要括号
+   "prettier.arrowParens": "always",
+   // 每个文件格式化的范围是文件的全部内容
+   "prettier.rangeStart": 0,
+   "prettier.rangeEnd": "Infinity",
+   // 不需要写文件开头的 @prettier
+   "prettier.requirePragma": false,
+   // 不需要自动在文件开头插入 @prettier
+   "prettier.insertPragma": false,
+   // 使用默认的折行标准
+   "prettier.proseWrap": "preserve",
+   // 根据显示样式决定 html 要不要折行
+   "prettier.htmlWhitespaceSensitivity": "css",
+   // vue 文件中的 script 和 style 内不用缩进
+   "prettier.vueIndentScriptAndStyle": false,
+   // 换行符使用 lf
+   "prettier.endOfLine": "lf",
+   // 格式化嵌入的内容
+  "prettier.embeddedLanguageFormatting": "auto",
+  "compile-hero.disable-compile-files-on-did-save-code": false,
+  "i18n-ally.localesPaths": [
+    "packages/lib-editor/src/components/i18n",
+    "packages/lib-editor/src/components/i18n/locales"
+  ],
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  },
+  "[shellscript]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "html"
+  },
+  "tailwindCSS.emmetCompletions": true,
+}

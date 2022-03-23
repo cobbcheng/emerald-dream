@@ -43,5 +43,6 @@
     "ignoreUploadUnusedFiles": true
   },
   "compileType": "miniprogram",
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate",
   "condition": {}
 }

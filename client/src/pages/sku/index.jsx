@@ -1,11 +1,20 @@
-import { Component } from 'react'
-import { View, Text } from '@tarojs/components'
-import { observer, inject } from 'mobx-react'
-import './index.less'
+import { Component } from 'react';
+import { View, Text } from '@tarojs/components';
+import { observer, inject } from 'mobx-react';
+import { getCurrentInstance } from '@tarojs/taro';
+import './index.less';
 
 @inject('store')
 @observer
 export default class Sku extends Component {
+  $instance = getCurrentInstance();
+
+  componentDidMount() {
+    const { id } = this.$instance.router.params;
+    const { getBoxList } = this.props.store.sku;
+    getBoxList(id);
+  }
+
   render() {
     return (
       <>
@@ -20,6 +29,6 @@ export default class Sku extends Component {
           <View>全冲</View>
         </View>
       </>
-    )
+    );
   }
 }

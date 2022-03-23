@@ -7,9 +7,7 @@ import './app.less'
 
 
 class App extends Component {
-  componentDidMount () {
-
-  }
+  componentDidMount () {}
 
   componentDidShow () {}
 
