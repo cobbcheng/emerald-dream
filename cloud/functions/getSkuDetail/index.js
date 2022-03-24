@@ -35,6 +35,12 @@ exports.main = async (event, context) => {
     };
   };
 
-  const res = await db.runTransaction(runTr);
+  let res = {};
+  try {
+    res = await db.runTransaction(runTr);
+  } catch (e) {
+    res = {};
+  }
+
   return res;
 };
