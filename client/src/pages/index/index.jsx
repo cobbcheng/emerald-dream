@@ -39,7 +39,7 @@ class Index extends Component {
               </View>
               <View>
                 <Text>
-                  盒子：{item.box_left}/{item.box_total}
+                  盒子：{item.price}/{item.originPrice}
                 </Text>
               </View>
             </View>
