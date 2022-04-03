@@ -8,31 +8,35 @@ class Sku {
   }
 
   @observable list = [];
-  @observable stockList = [];
+  @observable prizeList = [];
 
   @action.bound
   getBoxList(id) {
+    this.skuId = id;
     this.db
-      .collection('box')
+      .collection('yfs_box')
       .where({
-        sku_id: id,
+        skuId: id,
       })
       .get()
       .then((res) => {
         this.list = res.data;
+        console.log(res);
       });
   }
 
   @action.bound
-  getStockList(boxId) {
+  getPrizeList(boxId) {
+    this.boxId = boxId;
     this.db
-      .collection('stock')
+      .collection('yfs_prize')
       .where({
-        box_id: boxId,
+        boxId: boxId,
       })
       .get()
       .then((res) => {
-        this.stockList = res.data;
+        this.prizeList = res.data;
+        console.log(res);
       });
   }
 }

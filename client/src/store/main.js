@@ -9,7 +9,7 @@ class MainPage {
 
   @action.bound
   loadList() {
-    this.db.collection('sku').get().then(res => {
+    this.db.collection('yfs_sku').get().then(res => {
       console.log(res)
       this.skuList = res.data
     })
