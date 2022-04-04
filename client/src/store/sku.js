@@ -14,9 +14,9 @@ class Sku {
   getBoxList(id) {
     this.skuId = id;
     this.db
-      .collection('yfs_box')
+      .collection('yfs_sku')
       .where({
-        skuId: id,
+        spuId: id,
       })
       .get()
       .then((res) => {
@@ -27,17 +27,14 @@ class Sku {
 
   @action.bound
   getPrizeList(boxId) {
-    this.boxId = boxId;
-    this.db
-      .collection('yfs_prize')
-      .where({
-        boxId: boxId,
-      })
-      .get()
-      .then((res) => {
-        this.prizeList = res.data;
-        console.log(res);
-      });
+    this.callFunction({
+      name: 'getSku',
+      data: {
+        id: boxId,
+      },
+    }).then((res) => {
+      console.log(res);
+    });
   }
 }
 

@@ -25,7 +25,11 @@ export default class Sku extends Component {
     return (
       <>
         <View>
-          {list.map(item => <Button onClick={() => this.getPrize(item._id)} key={item._id}>第「{item.sortId}」箱</Button>)}
+          {list.map((item) => (
+            <Button onClick={() => this.getPrize(item._id)} key={item._id}>
+              第{item.number}箱
+            </Button>
+          ))}
         </View>
       </>
     );

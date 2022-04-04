@@ -42,6 +42,11 @@ class Index extends Component {
                   盒子：{item.price}/{item.originPrice}
                 </Text>
               </View>
+              <View>
+                <Text>
+                  box: {item.left} / {item.total}
+                </Text>
+              </View>
             </View>
           );
         })}

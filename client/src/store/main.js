@@ -1,19 +1,22 @@
-import { observable, action } from 'mobx'
-import { getCloud } from '@/helper/cloud'
+import { observable, action } from 'mobx';
+import { getCloud } from '@/helper/cloud';
 
 class MainPage {
   constructor() {
-    this.db = getCloud().db
+    this.db = getCloud().db;
   }
   @observable skuList = [];
 
   @action.bound
   loadList() {
-    this.db.collection('yfs_sku').get().then(res => {
-      console.log(res)
-      this.skuList = res.data
-    })
+    this.db
+      .collection('yfs_spu')
+      .get()
+      .then((res) => {
+        console.log(res);
+        this.skuList = res.data;
+      });
   }
 }
 
-export default new MainPage()
+export default new MainPage();
