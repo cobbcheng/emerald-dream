@@ -13,7 +13,6 @@ class MainPage {
       .collection('yfs_spu')
       .get()
       .then((res) => {
-        console.log(res);
         this.skuList = res.data;
       });
   }

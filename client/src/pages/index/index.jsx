@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { View, Text } from '@tarojs/components';
+import { View, Text, Image } from '@tarojs/components';
 import { observer, inject } from 'mobx-react';
 import Taro from '@tarojs/taro';
 
@@ -29,28 +29,30 @@ class Index extends Component {
   render() {
     const { skuList } = this.props.store.main;
     return (
-      <View className="index">
-        {skuList.map((item) => {
-          return (
-            <View key={item._id} onClick={() => this.handelClick(item._id)}>
-              <View className="item">
-                <Text>{item.name}</Text>
-                <Text>{item.price}</Text>
+      <>
+        <View className="banner"></View>
+        <View className="line"></View>
+        <View className="index">
+          {skuList.map((item) => {
+            return (
+              <View key={item._id} onClick={() => this.handelClick(item._id)} className="sku">
+                <View>
+                  <Image src={item.detailPic} className="sku-img" />
+                </View>
+                <View className="desc">
+                  <View className="name">{item.name}</View>
+                  <View className="info">
+                    <Text>¥{item.originPrice}</Text>
+                    <Text>
+                      {item.left} / {item.total} 箱
+                    </Text>
+                  </View>
+                </View>
               </View>
-              <View>
-                <Text>
-                  盒子：{item.price}/{item.originPrice}
-                </Text>
-              </View>
-              <View>
-                <Text>
-                  box: {item.left} / {item.total}
-                </Text>
-              </View>
-            </View>
-          );
-        })}
-      </View>
+            );
+          })}
+        </View>
+      </>
     );
   }
 }
