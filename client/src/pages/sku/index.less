@@ -66,3 +66,100 @@
       no-repeat center/cover;
   }
 }
+
+.list {
+  overflow: hidden;
+  padding: 60px 30px 400px;
+}
+
+.item {
+  float: left;
+  margin-left: 30px;
+  margin-top: 30px;
+  &:nth-child(4n + 1) {
+    margin-left: 0;
+  }
+  &-pic {
+    width: 150px;
+    height: 150px;
+    box-sizing: border-box;
+    border: 4px solid #f9dd8a;
+    position: relative;
+    &-detail {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  &-left {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    font-size: 20px;
+    color: #1f1f1f;
+    background: #f9dd8a;
+    padding: 5px;
+  }
+  &-info {
+    font-size: 20px;
+    width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 10px;
+  }
+}
+
+.fixed {
+  position: fixed;
+  z-index: 100;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.chong {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 101;
+  &-item {
+    width: 204px;
+    height: 154px;
+  }
+  &-1 {
+    background: url(https://7969-yifanshang-8g5d7nxddf660e3e-1310253199.tcb.qcloud.la/ui/btn_01.png) no-repeat
+      center/cover;
+  }
+  &-3 {
+    margin: 0 30px;
+    background: url(https://7969-yifanshang-8g5d7nxddf660e3e-1310253199.tcb.qcloud.la/ui/btn_03.png) no-repeat
+      center/cover;
+  }
+  &-5 {
+    background: url(https://7969-yifanshang-8g5d7nxddf660e3e-1310253199.tcb.qcloud.la/ui/btn_05.png) no-repeat
+      center/cover;
+  }
+}
+
+.bottom {
+  margin-top: -154px;
+  height: 400px;
+  position: relative;
+  background: url(https://7969-yifanshang-8g5d7nxddf660e3e-1310253199.tcb.qcloud.la/ui/bottom-btn.png?sign=699b3aaa56286c35906efe5347325465&t=1650190887)
+    no-repeat center/cover;
+  &-change {
+    width: 200px;
+    height: 100px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+  &-all {
+    width: 566px;
+    height: 230px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+}
