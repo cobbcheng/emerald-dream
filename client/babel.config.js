@@ -3,9 +3,23 @@
 // eslint-disable-next-line import/no-commonjs
 module.exports = {
   presets: [
-    ['taro', {
-      framework: 'react',
-      ts: false
-    }]
-  ]
-}
+    [
+      'taro',
+      {
+        framework: 'react',
+        ts: false,
+      },
+    ],
+  ],
+  plugins: [
+    [
+      'import',
+      {
+        libraryName: '@antmjs/vantui',
+        libraryDirectory: 'es',
+        style: (name) => `${name}/style/less`,
+      },
+      '@antmjs/vantui',
+    ],
+  ],
+};

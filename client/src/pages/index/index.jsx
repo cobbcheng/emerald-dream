@@ -27,13 +27,13 @@ class Index extends Component {
   }
 
   render() {
-    const { skuList } = this.props.store.main;
+    const { spuList } = this.props.store.main;
     return (
       <>
         <View className="banner"></View>
         <View className="line"></View>
         <View className="index">
-          {skuList.map((item) => {
+          {spuList.map((item) => {
             return (
               <View key={item._id} onClick={() => this.handelClick(item._id)} className="sku">
                 <View>

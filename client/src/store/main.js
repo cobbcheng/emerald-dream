@@ -5,7 +5,7 @@ class MainPage {
   constructor() {
     this.db = getCloud().db;
   }
-  @observable skuList = [];
+  @observable spuList = [];
 
   @action.bound
   loadList() {
@@ -13,7 +13,7 @@ class MainPage {
       .collection('yfs_spu')
       .get()
       .then((res) => {
-        this.skuList = res.data;
+        this.spuList = res.data;
       });
   }
 }

@@ -7,22 +7,22 @@ class Sku {
     this.callFunction = getCloud().callFunction;
   }
 
-  @observable list = [];
+  @observable boxes = [];
   @observable prizeList = [];
+  @observable detail = {};
 
   @action.bound
-  getBoxList(id) {
-    this.skuId = id;
-    this.db
-      .collection('yfs_sku')
-      .where({
-        spuId: id,
-      })
-      .get()
-      .then((res) => {
-        this.list = res.data;
-        console.log(res);
-      });
+  getSpuDetail(id) {
+    this.callFunction({
+      name: 'getSpuDetail',
+      data: {
+        id,
+      },
+    }).then((res) => {
+      const { detail, boxes } = res.result;
+      this.detail = detail;
+      this.boxes = boxes;
+    });
   }
 
   @action.bound
