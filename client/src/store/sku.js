@@ -11,9 +11,15 @@ class Sku {
   @observable prizeList = [];
   @observable detail = {};
 
+  get notEmptyBoxes() {
+    return this.boxes.filter((box) => {
+      return box.left > 0;
+    });
+  }
+
   @action.bound
   getSpuDetail(id) {
-    this.callFunction({
+    return this.callFunction({
       name: 'getSpuDetail',
       data: {
         id,
@@ -22,6 +28,7 @@ class Sku {
       const { detail, boxes } = res.result;
       this.detail = detail;
       this.boxes = boxes;
+      return Promise.resolve();
     });
   }
 
@@ -33,7 +40,13 @@ class Sku {
         id: boxId,
       },
     }).then((res) => {
-      console.log(res);
+      this.prizeList = res.result.sort((s, t) => {
+        const a = s.level.toLowerCase();
+        const b = t.level.toLowerCase();
+        if (a < b) return -1;
+        if (a > b) return 1;
+        return 0;
+      });
     });
   }
 }
