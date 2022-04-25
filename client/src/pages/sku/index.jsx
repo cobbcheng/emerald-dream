@@ -143,7 +143,7 @@ export default class Sku extends Component {
           style="background-color: transparent;"
           onClose={this.onClose}
         >
-          <PricePopup onClose={this.onClose} popupState={this.popupState} />
+          <PricePopup onClose={this.onClose} popupState={this.popupState} currentBoxId={this.state.currentBoxId} />
         </Popup>
       </View>
     );

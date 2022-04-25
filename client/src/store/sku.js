@@ -49,6 +49,22 @@ class Sku {
       });
     });
   }
+
+  @action.bound
+  async pay({ payTotal, productNum, skuId }) {
+    const res = await this.callFunction({
+      name: 'doPay',
+      data: { payTotal, productNum, skuId },
+    });
+    console.log(res);
+    if (res.result.code !== 0) {
+      return;
+    }
+    await wx.requestPayment({
+      ...res.result.pay,
+    });
+    this.callFunction({ name: 'payCallback' });
+  }
 }
 
 export default new Sku();
