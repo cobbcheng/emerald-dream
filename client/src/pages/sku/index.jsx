@@ -2,8 +2,9 @@ import { Component } from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { observer, inject } from 'mobx-react';
 import { getCurrentInstance } from '@tarojs/taro';
-import { Popup, Checkbox } from '@antmjs/vantui';
+import { Popup } from '@antmjs/vantui';
 import PricePopup from './components/PricePopup';
+import LoginDialog from '../../components/LoginDialog/index';
 import './index.less';
 
 @inject('store')
@@ -78,6 +79,10 @@ export default class Sku extends Component {
   };
 
   onShow = (type) => {
+    const { userInfo } = this.props.store;
+    if (userInfo.isLogin() === false) {
+      return;
+    }
     this.setState({ showPopup: true, popupType: type });
   };
 
@@ -145,6 +150,8 @@ export default class Sku extends Component {
         >
           <PricePopup onClose={this.onClose} popupState={this.popupState} currentBoxId={this.state.currentBoxId} />
         </Popup>
+
+        <LoginDialog></LoginDialog>
       </View>
     );
   }

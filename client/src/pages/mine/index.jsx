@@ -7,14 +7,15 @@ import './index.less';
 @observer
 export default class Sku extends Component {
   render() {
+    const { userInfo } = this.props.store.userInfo;
     return (
       <View className="mine">
         <View className="header">
           <View className="user">
             <View className="avatar">
-              <Image src="https://7969-yifanshang-8g5d7nxddf660e3e-1310253199.tcb.qcloud.la/cloudbase-cms/upload/2022-04-04/2jj3ubjaougzm5nglxa70p3bvxfpum7w_.jpeg?sign=0616876bc47705c73d08cf1895ce2c0b&t=1649042184"></Image>
+              <Image src={userInfo.avatarUrl}></Image>
             </View>
-            <View className="username">温柔</View>
+            <View className="username">{userInfo.nickName}</View>
           </View>
           <Image
             className="link"
