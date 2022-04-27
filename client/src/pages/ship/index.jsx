@@ -2,9 +2,21 @@ import { Component } from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { observer, inject } from 'mobx-react';
 import { getCurrentInstance } from '@tarojs/taro';
+import CommonCheckbox from '../../components/CommonCheckbox';
 import './index.less';
 
 export default class Ship extends Component {
+  state = {
+    allChecked: false,
+    checkedList: [],
+  };
+
+  onChange = () => {
+    this.setState({
+      allChecked: !this.state.allChecked,
+    });
+  };
+
   render() {
     return (
       <View className="ship">
@@ -16,7 +28,10 @@ export default class Ship extends Component {
           </View>
           <View className="header-tag">默认</View>
         </View>
-        <View className="select"></View>
+        <View className="select">
+          <CommonCheckbox checked={this.state.allChecked} onChange={this.onChange}></CommonCheckbox>
+          <View>已选 2/10</View>
+        </View>
         <View className="list">
           <View className="item">
             <View className="item-pic">
@@ -26,10 +41,14 @@ export default class Ship extends Component {
               ></Image>
             </View>
             <View className="item-info">
-              <View className="item-title">A赏 龙珠划分天下</View>
-              <View className="item-type">龙珠 vol. 100</View>
-              <View className="item-time">2022-3-19 12:33:33</View>
-              <View className="item-status">已发货</View>
+              <View className="item-info-flex">
+                <View className="item-title">A赏 龙珠划分天下</View>
+                <View className="item-type">龙珠 vol. 100</View>
+                <View className="item-time">2022-3-19 12:33:33</View>
+              </View>
+              <View className="item-check">
+                <CommonCheckbox></CommonCheckbox>
+              </View>
             </View>
           </View>
         </View>

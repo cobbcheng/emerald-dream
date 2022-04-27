@@ -59,10 +59,12 @@ class UserInfo {
     });
     this.openid = res.result.openid;
     try {
-      const r = await this.db.collection('user_info').doc(this.openid).get();
+      const { data } = await this.db.collection('user_info').doc(this.openid).get();
       this.userInfoReady = true;
-      this.userInfo = r.list[0];
-    } catch (e) {}
+      this.userInfo = data;
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   @action.bound

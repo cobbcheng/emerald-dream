@@ -60,6 +60,11 @@
     box-sizing: border-box;
     overflow: hidden;
     position: relative;
+    display: flex;
+    align-items: center;
+    &-flex {
+      flex: 1;
+    }
   }
   &-title {
     font-size: 28px;
@@ -100,4 +105,11 @@
   bottom: 60px;
   left: 0;
   right: 0;
+}
+
+.select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 30px;
 }

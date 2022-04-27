@@ -24,7 +24,7 @@ export default class Sku extends Component {
         </View>
 
         <View className="button">
-          <View className="item">
+          <View className="item" onClick={() => wx.navigateTo({ url: '/pages/address/index' })}>
             发货管理 <View className="arrow-icon"></View>
           </View>
           <View className="item">
