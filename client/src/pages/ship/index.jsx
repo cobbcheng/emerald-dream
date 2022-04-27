@@ -1,34 +1,22 @@
 import { Component } from 'react';
-import { View, Image } from '@tarojs/components';
+import { View, Text, Image } from '@tarojs/components';
 import { observer, inject } from 'mobx-react';
+import { getCurrentInstance } from '@tarojs/taro';
 import './index.less';
 
-@inject('store')
-@observer
-export default class Package extends Component {
-  navToShip = () => {
-    wx.navigateTo({
-      url: '/pages/ship/index',
-    });
-  };
+export default class Ship extends Component {
   render() {
     return (
-      <View className="package">
+      <View className="ship">
         <View className="header">
-          <View className="header-tab">
-            <Image
-              className="header-tab-item"
-              src="https://7969-yifanshang-8g5d7nxddf660e3e-1310253199.tcb.qcloud.la/ui/tab_btn_all.png"
-            ></Image>
-            <Image
-              className="header-tab-item header-tab-not"
-              src="https://7969-yifanshang-8g5d7nxddf660e3e-1310253199.tcb.qcloud.la/ui/tab_btn_not_gray.png"
-            ></Image>
+          <View className="header-icon"></View>
+          <View className="header-info">
+            <View className="header-title">龙珠大满贯 18955544237</View>
+            <View className="header-desc">上海市徐汇区田林路142号，上海市徐汇区</View>
           </View>
-
-          <View className="header-pack" onClick={this.navToShip}></View>
+          <View className="header-tag">默认</View>
         </View>
-
+        <View className="select"></View>
         <View className="list">
           <View className="item">
             <View className="item-pic">
@@ -45,6 +33,7 @@ export default class Package extends Component {
             </View>
           </View>
         </View>
+        <View className="button">立即发货</View>
       </View>
     );
   }
