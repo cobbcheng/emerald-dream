@@ -32,7 +32,7 @@ exports.main = async (event, context) => {
     return data.map((item) => {
       const orderedItem = order.data.filter((e) => e.itemId === item._id);
       item.total = orderedItem.length;
-      item.left = orderedItem.filter((r) => r.isProvide === false).length;
+      item.left = orderedItem.filter((r) => !r.isProvide).length;
       return item;
     });
   };

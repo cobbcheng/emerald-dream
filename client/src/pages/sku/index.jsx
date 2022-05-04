@@ -4,6 +4,7 @@ import { observer, inject } from 'mobx-react';
 import { getCurrentInstance } from '@tarojs/taro';
 import { Popup } from '@antmjs/vantui';
 import PricePopup from './components/PricePopup';
+import LotteryDialog from './components/LotteryDialog';
 import LoginDialog from '../../components/LoginDialog/index';
 import './index.less';
 
@@ -112,7 +113,6 @@ export default class Sku extends Component {
           </View>
           <View className="tab-btn tab-next"></View>
         </View>
-
         <View className="list">
           {prizeList.map((item) => (
             <View className="item">
@@ -128,7 +128,6 @@ export default class Sku extends Component {
             </View>
           ))}
         </View>
-
         <View className="fixed">
           <View className="chong">
             <View className="chong-item chong-1" onClick={() => this.onShow(1)}></View>
@@ -141,7 +140,6 @@ export default class Sku extends Component {
             <View className="bottom-all" onClick={() => this.onShow('all')}></View>
           </View>
         </View>
-
         <Popup
           show={this.state.showPopup}
           position="bottom"
@@ -150,8 +148,8 @@ export default class Sku extends Component {
         >
           <PricePopup onClose={this.onClose} popupState={this.popupState} currentBoxId={this.state.currentBoxId} />
         </Popup>
-
         <LoginDialog></LoginDialog>
+        <LotteryDialog></LotteryDialog>
       </View>
     );
   }

@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { observer, inject } from 'mobx-react';
 import { Checkbox } from '@antmjs/vantui';
+import CommonCheckbox from '@/components/CommonCheckbox';
 import './index.less';
 
 @inject('store')
@@ -22,10 +23,21 @@ export default class PricePopup extends Component {
   pay = () => {
     const { pay } = this.props.store.sku;
     const { popupState, currentBoxId } = this.props;
+
+    if (!this.state.checked) {
+      wx.showToast({
+        title: '请同意用户购买协议',
+        icon: 'none',
+      });
+      return;
+    }
     pay({
       payTotal: popupState.price * popupState.num,
       productNum: popupState.num,
       skuId: currentBoxId,
+      clientEnd: () => {
+        this.props.onClose();
+      },
     });
   };
 
@@ -33,7 +45,7 @@ export default class PricePopup extends Component {
     const { popupState } = this.props;
     return (
       <>
-        <View className="popup-top"></View>
+        <View className="popup-top" onClick={this.props.onClose}></View>
         <View className="popup-back">
           <View className="popup-header">
             <View className="popup-title">购买 {popupState.name}</View>
@@ -54,8 +66,8 @@ export default class PricePopup extends Component {
             </View>
           </View>
           <View className="popup-protocol">
-            <Checkbox value={this.checked} checkedColor="#efd80e" shape="square" onChange={this.onChange}></Checkbox>
-            同意 <Text className="popup-highlight">《用户购买协议》</Text>、
+            <CommonCheckbox checked={this.state.checked} onChange={this.onChange}></CommonCheckbox> 同意{' '}
+            <Text className="popup-highlight">《用户购买协议》</Text>、
             <Text className="popup-highlight">《发货通知》</Text>
           </View>
           <View className="popup-button" onClick={this.pay}>

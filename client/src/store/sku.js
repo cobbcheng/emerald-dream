@@ -11,10 +11,19 @@ class Sku {
   @observable prizeList = [];
   @observable detail = {};
 
+  // 中奖弹窗信息
+  @observable lotteryDialogVisible = false;
+  @observable lotteryDialogInfo = [];
+
   get notEmptyBoxes() {
     return this.boxes.filter((box) => {
       return box.left > 0;
     });
+  }
+
+  @action.bound
+  hideLotteryDialog() {
+    this.lotteryDialogVisible = false;
   }
 
   @action.bound
@@ -51,19 +60,30 @@ class Sku {
   }
 
   @action.bound
-  async pay({ payTotal, productNum, skuId }) {
+  async pay({ payTotal, productNum, skuId, clientEnd = () => {}, allEnd = () => {} }) {
     const res = await this.callFunction({
       name: 'doPay',
       data: { payTotal, productNum, skuId },
     });
-    console.log(res);
     if (res.result.code !== 0) {
       return;
     }
     await wx.requestPayment({
       ...res.result.pay,
     });
-    this.callFunction({ name: 'payCallback' });
+    clientEnd();
+    await this.callFunction({ name: 'payCallback' });
+    const order = await this.callFunction({
+      name: 'afterPay',
+      data: {
+        skuId,
+        num: productNum,
+      },
+    });
+
+    this.lotteryDialogInfo = order.result;
+    this.lotteryDialogVisible = true;
+    allEnd(order.result);
   }
 }
 
