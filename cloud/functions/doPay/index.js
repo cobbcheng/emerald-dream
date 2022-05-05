@@ -16,7 +16,7 @@ exports.main = async (event, context) => {
   const { payTotal, productNum, skuId } = event;
 
   const res = await cloud.cloudPay.unifiedOrder({
-    body: '测试微信支付功能',
+    body: '一番赏支付',
     outTradeNo: uid,
     spbillCreateIp: JSON.parse(context.environment).WX_CLIENTIP,
     subMchId: '1623194504',

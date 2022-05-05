@@ -68,8 +68,10 @@ class Sku {
     if (res.result.code !== 0) {
       return;
     }
+    const { pay, uuid } = res.result;
+    console.log(uuid);
     await wx.requestPayment({
-      ...res.result.pay,
+      ...pay,
     });
     clientEnd();
     await this.callFunction({ name: 'payCallback' });
@@ -78,6 +80,7 @@ class Sku {
       data: {
         skuId,
         num: productNum,
+        payUid: uuid,
       },
     });
 

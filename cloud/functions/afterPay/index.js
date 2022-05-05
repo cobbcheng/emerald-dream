@@ -12,7 +12,8 @@ const $ = db.command.aggregate;
 
 // 云函数入口函数
 exports.main = async (event, context) => {
-  const { skuId, num } = event;
+  const { skuId, num, payUid } = event;
+  const { OPENID } = cloud.getWXContext();
 
   const runTr = async (tr) => {
     // 读
@@ -55,13 +56,25 @@ exports.main = async (event, context) => {
   const writeData = ({ order }) => {
     db.collection('yfs_order')
       .where({
-        _id: _.in(order.list.map((item) => item.itemId)),
+        _id: _.in(order.list.map((item) => item._id)),
       })
       .update({
         data: {
           isProvide: true,
         },
       });
+    const productTable = [];
+    order.list.forEach((item) => {
+      productTable.push({
+        userId: OPENID,
+        tradeId: payUid,
+        orderId: item._id,
+        skuId,
+        status: 0,
+        statusReason: '',
+      });
+    });
+    db.collection('yfs_product').add({ data: productTable });
   };
 
   let res = {};
