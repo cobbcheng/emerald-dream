@@ -6,6 +6,7 @@ class MainPage {
     this.db = getCloud().db;
   }
   @observable spuList = [];
+  @observable banner = [];
 
   @action.bound
   loadList() {
@@ -14,6 +15,18 @@ class MainPage {
       .get()
       .then((res) => {
         this.spuList = res.data;
+      });
+  }
+
+  @action.bound
+  loadBanner() {
+    this.db
+      .collection('yfs_banner')
+      .where({})
+      .limit(1)
+      .get()
+      .then((res) => {
+        this.banner = res.data;
       });
   }
 }

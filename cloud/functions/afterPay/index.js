@@ -69,6 +69,7 @@ exports.main = async (event, context) => {
         userId: OPENID,
         tradeId: payUid,
         orderId: item._id,
+        itemId: item.itemId,
         skuId,
         status: 0,
         statusReason: '',
@@ -81,7 +82,7 @@ exports.main = async (event, context) => {
   try {
     const { result, order } = await db.runTransaction(runTr);
     res = result;
-    writeData({ order });
+    writeData({ order, result });
   } catch (e) {
     res = {
       error: e,

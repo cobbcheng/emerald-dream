@@ -41,6 +41,7 @@
     "@tarojs/react": "3.4.3",
     "@tarojs/runtime": "3.4.3",
     "@tarojs/taro": "3.4.3",
+    "dayjs": "^1.11.2",
     "mobx": "^4.8.0",
     "mobx-react": "^6.1.4",
     "react": "^17.0.0",

@@ -12,6 +12,7 @@ class Index extends Component {
 
   componentDidMount() {
     this.props.store.main.loadList();
+    this.props.store.main.loadBanner();
   }
 
   componentWillUnmount() {}
@@ -27,10 +28,14 @@ class Index extends Component {
   }
 
   render() {
-    const { spuList } = this.props.store.main;
+    const { spuList, banner } = this.props.store.main;
     return (
       <>
-        <View className="banner"></View>
+        <View className="banner">
+          {banner.map((bannerItem) => (
+            <Image className="banner-img" src={bannerItem.pic}></Image>
+          ))}
+        </View>
         <View className="line"></View>
         <View className="index">
           {spuList.map((item) => {

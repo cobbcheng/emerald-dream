@@ -11,15 +11,21 @@ const _ = db.command;
 
 // 云函数入口函数
 exports.main = async (event, context) => {
-  const result = (await db.collection('yfs_pay').doc(event.userInfo.openId).get()).data;
+  const { OPENID } = cloud.getWXContext();
+  const result = (await db.collection('yfs_pay').doc(OPENID).get()).data;
+  console.log(result);
   const res = await cloud.cloudPay.queryOrder({
     sub_mch_id: '1623194504',
     out_trade_no: result.uuid,
   });
+  console.log(res);
   if (res.resultCode === 'SUCCESS') {
+    console.log(res.resultCode);
     await db
       .collection('yfs_trade')
-      .doc(result.uuid)
+      .where({
+        uid: result.uuid,
+      })
       .update({
         data: {
           status: res.tradeState,
