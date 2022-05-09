@@ -5,6 +5,8 @@ import { getCurrentInstance } from '@tarojs/taro';
 import { Field } from '@antmjs/vantui';
 import './index.less';
 
+@observer
+@inject('store')
 export default class AddressEdit extends Component {
   state = {
     name: '',
@@ -55,6 +57,23 @@ export default class AddressEdit extends Component {
       });
       return;
     }
+
+    this.props.store.address
+      .addNewAddress({
+        openid: this.props.store.userInfo.openid,
+        addressName: this.state.name,
+        addressPhone: this.state.phone,
+        address: this.state.address,
+      })
+      .then((res) => {
+        const { _id } = res;
+        this.props.store.address.setDefaultAddress({ addressId: _id, id: this.props.store.userInfo.openid });
+        wx.showToast({
+          title: '保存成功',
+        });
+
+        this.cancel();
+      });
   };
 
   cancel = () => {

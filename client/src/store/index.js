@@ -3,6 +3,7 @@ import sku from './sku';
 import global from './global';
 import userInfo from './userInfo';
 import pkg from './pkg';
+import address from './address';
 
 const store = {
   main,
@@ -10,6 +11,7 @@ const store = {
   global,
   userInfo,
   pkg,
+  address,
 };
 
 export default store;
