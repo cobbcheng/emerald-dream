@@ -17,6 +17,7 @@ export default class Sku extends Component {
     showPopup: false,
     checked: false,
     currentBoxId: '',
+    currentBoxIndex: 0,
     popupType: 1,
   };
 
@@ -25,10 +26,39 @@ export default class Sku extends Component {
     const { getSpuDetail } = this.props.store.sku;
     getSpuDetail(id).then(() => {
       const firstBox = this.props.store.sku.notEmptyBoxes[0];
-      this.setState({ currentBoxId: firstBox._id });
+      this.setState({ currentBoxId: firstBox._id, currentBoxIndex: 0 });
       this.getPrize(firstBox._id);
     });
   }
+
+  nextBox = () => {
+    const { notEmptyBoxes } = this.props.store.sku;
+    if (notEmptyBoxes.length === 1) {
+      return;
+    }
+    const { currentBoxIndex } = this.state;
+    const nextIndex = currentBoxIndex + 1;
+    if (nextIndex >= notEmptyBoxes.length) {
+      return;
+    }
+    const nextBox = notEmptyBoxes[nextIndex];
+    this.setState({ currentBoxId: nextBox._id, currentBoxIndex: nextIndex });
+    this.getPrize(nextBox._id);
+  };
+  prevBox = () => {
+    const { notEmptyBoxes } = this.props.store.sku;
+    if (notEmptyBoxes.length === 1) {
+      return;
+    }
+    const { currentBoxIndex } = this.state;
+    const prevIndex = currentBoxIndex - 1;
+    if (prevIndex < 0) {
+      return;
+    }
+    const prevBox = notEmptyBoxes[prevIndex];
+    this.setState({ currentBoxId: prevBox._id, currentBoxIndex: prevIndex });
+    this.getPrize(prevBox._id);
+  };
 
   get currentBox() {
     const { currentBoxId } = this.state;
@@ -106,12 +136,13 @@ export default class Sku extends Component {
         </View>
         <View className="line"></View>
         <View className="tab">
-          <View className="tab-btn tab-pre"></View>
+          <View className="tab-btn tab-pre" onClick={this.prevBox}></View>
           <View className="tab-info">
-            第 <Text className="tab-info-number">{notEmptyBoxes.length}</Text>/{boxes.length} 箱 &nbsp; 赏品余量&nbsp;
+            第 <Text className="tab-info-number">{this.state.currentBoxIndex + 1}</Text>/{boxes.length} 箱 &nbsp;
+            赏品余量&nbsp;
             <Text className="tab-info-number">33</Text>/{prizeList.length}
           </View>
-          <View className="tab-btn tab-next"></View>
+          <View className="tab-btn tab-next" onClick={this.nextBox}></View>
         </View>
         <View className="list">
           {prizeList.map((item) => (

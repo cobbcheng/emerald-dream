@@ -12,9 +12,9 @@ export default class Address extends Component {
     this.props.store.address.getAddressList();
   }
 
-  setDefault = () => {
+  setDefault = (addressId) => {
     const { openid } = this.props.store.userInfo;
-    this.props.store.address.setDefaultAddress();
+    this.props.store.address.setDefaultAddress({ id: openid, addressId });
   };
 
   render() {
@@ -22,7 +22,7 @@ export default class Address extends Component {
     return (
       <View className="address">
         {addressList.map((address) => (
-          <View className="header" onClick={this.setDefault}>
+          <View className="header" onClick={() => this.setDefault(address._id)}>
             <View className="header-icon"></View>
             <View className="header-info">
               <View className="header-title">

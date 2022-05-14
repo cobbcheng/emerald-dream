@@ -34,6 +34,16 @@ class Address {
 
   @action.bound
   async setDefaultAddress({ id, addressId }) {
+    this.addressList = this.addressList.map((address) => {
+      if (address._id === addressId) {
+        address.isDefault = true;
+      } else {
+        address.isDefault = false;
+      }
+
+      return address;
+    });
+
     const res = await this.db
       .collection('yfs_default')
       .where({
