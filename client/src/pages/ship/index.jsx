@@ -4,8 +4,8 @@ import { observer, inject } from 'mobx-react';
 import CommonCheckbox from '../../components/CommonCheckbox';
 import './index.less';
 
-@observer
 @inject('store')
+@observer
 export default class Ship extends Component {
   state = {
     allChecked: false,

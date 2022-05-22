@@ -5,8 +5,8 @@ import { getCurrentInstance } from '@tarojs/taro';
 import { Field } from '@antmjs/vantui';
 import './index.less';
 
-@observer
 @inject('store')
+@observer
 export default class AddressEdit extends Component {
   state = {
     name: '',

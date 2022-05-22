@@ -3,8 +3,8 @@ import { View, Image } from '@tarojs/components';
 import { observer, inject } from 'mobx-react';
 import './index.less';
 
-@observer
 @inject('store')
+@observer
 export default class Package extends Component {
   state = {
     tab: 'all',

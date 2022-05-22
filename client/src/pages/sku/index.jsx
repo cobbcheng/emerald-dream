@@ -7,8 +7,8 @@ import PricePopup from './components/PricePopup';
 import LotteryDialog from './components/LotteryDialog';
 import LoginDialog from '../../components/LoginDialog/index';
 import './index.less';
-@observer
 @inject('store')
+@observer
 export default class Sku extends Component {
   $instance = getCurrentInstance();
 

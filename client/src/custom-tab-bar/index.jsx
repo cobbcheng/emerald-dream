@@ -2,7 +2,6 @@ import { Component } from 'react';
 import { View, Text } from '@tarojs/components';
 import './index.less';
 import { observer, inject } from 'mobx-react';
-
 @inject('store')
 @observer
 export default class TabBar extends Component {

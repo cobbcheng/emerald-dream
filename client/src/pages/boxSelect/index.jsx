@@ -5,12 +5,14 @@ import { getCurrentInstance } from '@tarojs/taro';
 import CommonCheckbox from '@/components/CommonCheckbox';
 import './index.less';
 
-@observer
 @inject('store')
+@observer
 export default class BoxSelect extends Component {
   state = {
     checked: false,
   };
+
+  id = getCurrentInstance().id;
 
   checkChange = () => {
     this.setState({ checked: !this.state.checked });

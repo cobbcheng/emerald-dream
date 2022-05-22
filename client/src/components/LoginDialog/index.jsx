@@ -3,7 +3,6 @@ import { observer, inject } from 'mobx-react';
 import Dialog from '../Dialog/index';
 import { Button } from '@tarojs/components';
 import './index.less';
-
 @inject('store')
 @observer
 export default class LoginDialog extends Component {

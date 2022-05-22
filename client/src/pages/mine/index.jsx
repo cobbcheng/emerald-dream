@@ -2,8 +2,8 @@ import { Component } from 'react';
 import { View, Image } from '@tarojs/components';
 import { observer, inject } from 'mobx-react';
 import './index.less';
-@observer
 @inject('store')
+@observer
 export default class Sku extends Component {
   render() {
     const { userInfo } = this.props.store.userInfo;
