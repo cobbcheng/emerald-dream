@@ -5,8 +5,8 @@ import { getCurrentInstance } from '@tarojs/taro';
 import { If } from 'react-if';
 import './index.less';
 
-@inject('store')
 @observer
+@inject('store')
 export default class Address extends Component {
   componentDidMount() {
     this.props.store.address.getAddressList();

@@ -19,10 +19,12 @@ class UserInfo {
   bindGetUserInfo() {
     wx.getUserProfile({
       desc: '用于完善会员资料',
-      success: (res) => {
+      success: async (res) => {
         this.userInfo = res.userInfo;
         this.isShowAuthDialog = false;
+        this.userInfoReady = true;
         this.setUserInfo();
+        this.getOpenId();
       },
     });
   }

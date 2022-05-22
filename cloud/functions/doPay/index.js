@@ -18,7 +18,8 @@ exports.main = async (event, context) => {
   const res = await cloud.cloudPay.unifiedOrder({
     body: '一番赏支付',
     outTradeNo: uid,
-    spbillCreateIp: JSON.parse(context.environment).WX_CLIENTIP,
+    // spbillCreateIp: JSON.parse(context.environment).WX_CLIENTIP || '127.0.0.1',
+    spbillCreateIp: '127.0.0.1',
     subMchId: '1623194504',
     totalFee: 1,
     envId: 'yifanshang-8g5d7nxddf660e3e',

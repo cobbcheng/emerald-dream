@@ -5,8 +5,8 @@ import Taro from '@tarojs/taro';
 
 import './index.less';
 
-@inject('store')
 @observer
+@inject('store')
 class Index extends Component {
   componentWillMount() {}
 

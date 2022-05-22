@@ -4,6 +4,7 @@ import global from './global';
 import userInfo from './userInfo';
 import pkg from './pkg';
 import address from './address';
+import selectBox from './selectBox';
 
 const store = {
   main,
@@ -12,6 +13,7 @@ const store = {
   userInfo,
   pkg,
   address,
+  selectBox,
 };
 
 export default store;

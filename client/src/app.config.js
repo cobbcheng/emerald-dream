@@ -7,6 +7,7 @@ export default defineAppConfig({
     'pages/ship/index',
     'pages/address/index',
     'pages/addressEdit/index',
+    'pages/boxSelect/index',
   ],
   window: {
     backgroundTextStyle: 'dark',

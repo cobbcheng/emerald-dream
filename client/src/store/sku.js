@@ -61,19 +61,27 @@ class Sku {
 
   @action.bound
   async pay({ payTotal, productNum, skuId, clientEnd = () => {}, allEnd = () => {} }) {
+    wx.showLoading({
+      title: '支付中',
+    });
+
     const res = await this.callFunction({
       name: 'doPay',
       data: { payTotal, productNum, skuId },
     });
     if (res.result.code !== 0) {
+      wx.hideLoading();
+      wx.showToast({
+        title: '支付失败',
+      });
       return;
     }
     const { pay, uuid } = res.result;
-    console.log(uuid);
     await wx.requestPayment({
       ...pay,
     });
     clientEnd();
+    wx.hideLoading();
     await this.callFunction({ name: 'payCallback' });
     const order = await this.callFunction({
       name: 'afterPay',
