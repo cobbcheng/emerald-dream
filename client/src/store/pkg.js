@@ -7,19 +7,50 @@ class Package {
     this.callFunction = getCloud().callFunction;
   }
   @observable pkgList = [];
+  @observable pkgPaging = 1;
+
+  @observable shipList = [];
+  @observable shipPaging = 1;
 
   @action.bound
-  getPkgList(data = {}) {
+  getShipList() {
     this.callFunction({
       name: 'myPrize',
-      data,
+      data: {
+        page: this.shipPaging,
+        status: 0,
+      },
     }).then((res) => {
-      this.pkgList = res.result.list.map((item) => {
-        return {
-          ...item,
-          item: item.item[0],
-        };
-      });
+      this.shipPaging += 1;
+      this.shipList.push(
+        ...res.result.list.map((item) => {
+          return {
+            ...item,
+            item: item.item[0],
+          };
+        }),
+      );
+    });
+  }
+
+  @action.bound
+  getPkgList(config = {}) {
+    this.callFunction({
+      name: 'myPrize',
+      data: {
+        page: this.pkgPaging,
+        ...config,
+      },
+    }).then((res) => {
+      this.pkgPaging += 1;
+      this.pkgList.push(
+        ...res.result.list.map((item) => {
+          return {
+            ...item,
+            item: item.item[0],
+          };
+        }),
+      );
     });
   }
 

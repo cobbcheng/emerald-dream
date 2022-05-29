@@ -14,6 +14,7 @@ class Sku {
   // 中奖记录
   @observable recordVisible = false;
   @observable recordList = [];
+  @observable recordPaging = 1;
 
   // 中奖弹窗信息
   @observable lotteryDialogVisible = false;
@@ -34,8 +35,12 @@ class Sku {
   getRecordList() {
     this.callFunction({
       name: 'getPrizeRecord',
+      data: {
+        page: this.recordPaging,
+      },
     }).then((res) => {
-      this.recordList = res.result;
+      this.recordList.push(...res.result);
+      this.recordPaging += 1;
     });
   }
 

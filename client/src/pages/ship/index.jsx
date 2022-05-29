@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { View, Text, Image } from '@tarojs/components';
+import { View, ScrollView, Image } from '@tarojs/components';
 import { observer, inject } from 'mobx-react';
 import CommonCheckbox from '../../components/CommonCheckbox';
 import './index.less';
@@ -24,9 +24,13 @@ export default class Ship extends Component {
   };
 
   componentDidMount() {
-    this.props.store.pkg.getPkgList({ status: 0 });
+    this.props.store.pkg.getShipList();
     this.props.store.address.getAddressList();
   }
+
+  loadMore = () => {
+    this.props.store.pkg.getShipList();
+  };
 
   get defaultAddress() {
     const { addressList } = this.props.store.address;
@@ -39,10 +43,10 @@ export default class Ship extends Component {
   }
 
   render() {
-    const { pkgList, setItemCheck, shipNow } = this.props.store.pkg;
+    const { shipList, setItemCheck, shipNow } = this.props.store.pkg;
 
     return (
-      <View className="ship">
+      <ScrollView className="ship" scrollY scrollWithAnimation enhanced pagingEnabled onScrollToLower={this.loadMore}>
         <View className="header">
           <View className="header-icon"></View>
           <View className="header-info">
@@ -58,7 +62,7 @@ export default class Ship extends Component {
           <View>已选 2/10</View>
         </View>
         <View className="list">
-          {pkgList.map((pkg) => (
+          {shipList.map((pkg) => (
             <View className="item" onClick={() => setItemCheck(pkg._id)}>
               <View className="item-pic">
                 <Image className="item-img" src={pkg.item.pic}></Image>
@@ -79,7 +83,7 @@ export default class Ship extends Component {
         <View className="button" onClick={shipNow}>
           立即发货
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }

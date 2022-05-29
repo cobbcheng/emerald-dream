@@ -11,6 +11,7 @@ const _ = db.command;
 
 // 云函数入口函数
 exports.main = async (event, context) => {
+  const { page } = event;
   const record = await db
     .collection('yfs_product')
     .aggregate()
@@ -26,6 +27,7 @@ exports.main = async (event, context) => {
       foreignField: '_id',
       as: 'item',
     })
+    .skip((page - 1) * 20)
     .limit(20)
     .end();
 

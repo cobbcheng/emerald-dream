@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { View, Image } from '@tarojs/components';
+import { View, Image, ScrollView } from '@tarojs/components';
 import { observer, inject } from 'mobx-react';
 import './index.less';
 
@@ -24,6 +24,10 @@ export default class Package extends Component {
     this.props.store.pkg.getPkgList();
   }
 
+  loadMore = (e) => {
+    this.props.store.pkg.getPkgList();
+  };
+
   get list() {
     const { pkgList } = this.props.store.pkg;
     return this.state.tab === 'all' ? pkgList : pkgList.filter((pkg) => pkg.status === 0);
@@ -44,7 +48,14 @@ export default class Package extends Component {
   render() {
     const stat = ['未发货', '已发货', '发货失败'];
     return (
-      <View className="package">
+      <ScrollView
+        className="package"
+        scrollY
+        scrollWithAnimation
+        enhanced
+        pagingEnabled
+        onScrollToLower={this.loadMore}
+      >
         <View className="header">
           <View className="header-tab">
             <Image className="header-tab-item" onClick={() => this.tab('all')} src={this.allBtn}></Image>
@@ -69,7 +80,7 @@ export default class Package extends Component {
             </View>
           ))}
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }

@@ -13,7 +13,7 @@ const $ = db.command.aggregate;
 // 云函数入口函数
 exports.main = async (event, context) => {
   const { OPENID } = cloud.getWXContext();
-  const { status } = event;
+  const { status, page } = event;
 
   const matchObj = {
     userId: OPENID,
@@ -33,6 +33,7 @@ exports.main = async (event, context) => {
       foreignField: '_id',
       as: 'item',
     })
+    .skip((page - 1) * 20)
     .limit(20)
     .end();
 

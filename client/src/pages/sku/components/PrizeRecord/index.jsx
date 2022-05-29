@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { View, Image } from '@tarojs/components';
+import { View, Image, ScrollView } from '@tarojs/components';
 import { observer, inject } from 'mobx-react';
 import { Overlay } from '@antmjs/vantui';
 import './index.less';
@@ -11,6 +11,11 @@ export default class PrizeRecord extends Component {
     this.props.store.sku.getRecordList();
   }
 
+  loadMore = (e) => {
+    console.log(e);
+    this.props.store.sku.getRecordList();
+  };
+
   render() {
     const { toggleRecordVisible, recordVisible, recordList } = this.props.store.sku;
 
@@ -19,7 +24,14 @@ export default class PrizeRecord extends Component {
         <View className="record">
           <View className="close" onClick={() => toggleRecordVisible(false)}></View>
           <View className="record-head"></View>
-          <View className="record-body">
+          <ScrollView
+            className="record-body"
+            scrollY
+            scrollWithAnimation
+            enhanced
+            pagingEnabled
+            onScrollToLower={this.loadMore}
+          >
             {recordList.map((record) => {
               return (
                 <View className="record-item">
@@ -34,7 +46,7 @@ export default class PrizeRecord extends Component {
                 </View>
               );
             })}
-          </View>
+          </ScrollView>
         </View>
       </Overlay>
     );
