@@ -3,6 +3,7 @@ import { View, Text, Image } from '@tarojs/components';
 import { observer, inject } from 'mobx-react';
 import { getCurrentInstance } from '@tarojs/taro';
 import CommonCheckbox from '@/components/CommonCheckbox';
+import { If } from 'react-if';
 import './index.less';
 
 @inject('store')
@@ -12,11 +13,32 @@ export default class BoxSelect extends Component {
     checked: false,
   };
 
-  id = getCurrentInstance().id;
+  id = getCurrentInstance().router.params.id;
+
+  componentDidMount() {
+    this.props.store.selectBox.getBoxList(this.id);
+  }
 
   checkChange = () => {
     this.setState({ checked: !this.state.checked });
   };
+
+  select = (item) => {
+    if (item.all <= 0) {
+      return;
+    }
+    wx.navigateTo({
+      url: `/pages/sku/index?id=${this.id}&boxId=${item.id}`,
+    });
+  };
+
+  get filterList() {
+    const { list } = this.props.store.selectBox;
+    if (this.state.checked) {
+      return list.filter((item) => item.all > 0);
+    }
+    return list;
+  }
 
   render() {
     return (
@@ -34,23 +56,30 @@ export default class BoxSelect extends Component {
           </View>
         </View>
         <View className="list">
-          <View className="box">
-            <View className="box-left">
-              <View className="box-icon"></View>
-              <View className="box-stat">剩余88张</View>
-            </View>
-            <View className="box-right">
-              <View className="box-item">A 2/2</View>
-              <View className="box-item">B 2/2</View>
-              <View className="box-item">C 2/2</View>
-              <View className="box-item">D 2/2</View>
-              <View className="box-item">E 2/2</View>
-              <View className="box-item">F 2/2</View>
-              <View className="box-item">G 2/2</View>
-              <View className="box-item">H 2/2</View>
-              <View className="box-item">I 2/2</View>
-            </View>
-          </View>
+          {this.filterList.map((item) => {
+            return (
+              <View className="box" onClick={() => this.select(item)}>
+                <View className="box-left">
+                  <View className="box-icon"></View>
+                  <View className="box-stat">剩余{item.all}张</View>
+                </View>
+                <View className="box-right">
+                  {item.items.map((l) => {
+                    return (
+                      <View className="box-item">
+                        {l.level} {l.left}/{l.top}
+                      </View>
+                    );
+                  })}
+                </View>
+                <If condition={item.all === 0}>
+                  <View className="sold-out">
+                    <View className="sold-out-icon"></View>
+                  </View>
+                </If>
+              </View>
+            );
+          })}
         </View>
       </View>
     );

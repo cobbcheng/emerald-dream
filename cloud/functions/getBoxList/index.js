@@ -16,7 +16,7 @@ exports.main = async (event, context) => {
 
   const runTr = async (tr) => {
     const boxes = await tr
-      .collection('yfs_box')
+      .collection('yfs_sku')
       .aggregate()
       .match({
         spuId: id,
@@ -37,14 +37,31 @@ exports.main = async (event, context) => {
       .get();
 
     return {
-      boxes,
-      stocks,
+      boxes: boxes.list,
+      stocks: stocks.data,
     };
   };
 
   let res = {};
   try {
-    res = await db.runTransaction(runTr);
+    const { boxes, stocks } = await db.runTransaction(runTr);
+    res = boxes.map((box) => {
+      const result = {
+        id: box._id,
+        items: [],
+      };
+      stocks.forEach((stock) => {
+        const l = stock.level;
+        const item = {};
+        const levelItem = box.orders.filter((order) => order.level === l);
+        item.level = l;
+        item.top = levelItem.length;
+        item.left = levelItem.filter((it) => !it.isProvide).length;
+        result.items.push(item);
+      });
+
+      return result;
+    });
   } catch (e) {
     res = {};
   }

@@ -73,6 +73,7 @@ exports.main = async (event, context) => {
         skuId,
         status: 0,
         statusReason: '',
+        _createTime: Date.now(),
       });
     });
     db.collection('yfs_product').add({ data: productTable });

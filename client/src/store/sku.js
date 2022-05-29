@@ -11,6 +11,10 @@ class Sku {
   @observable prizeList = [];
   @observable detail = {};
 
+  // 中奖记录
+  @observable recordVisible = false;
+  @observable recordList = [];
+
   // 中奖弹窗信息
   @observable lotteryDialogVisible = false;
   @observable lotteryDialogInfo = [];
@@ -18,6 +22,20 @@ class Sku {
   get notEmptyBoxes() {
     return this.boxes.filter((box) => {
       return box.left > 0;
+    });
+  }
+
+  @action.bound
+  toggleRecordVisible(visible) {
+    this.recordVisible = visible;
+  }
+
+  @action.bound
+  getRecordList() {
+    this.callFunction({
+      name: 'getPrizeRecord',
+    }).then((res) => {
+      this.recordList = res.result;
     });
   }
 

@@ -5,6 +5,7 @@ import { getCurrentInstance } from '@tarojs/taro';
 import { Popup } from '@antmjs/vantui';
 import PricePopup from './components/PricePopup';
 import LotteryDialog from './components/LotteryDialog';
+import PrizeRecord from './components/PrizeRecord';
 import LoginDialog from '../../components/LoginDialog/index';
 import './index.less';
 @inject('store')
@@ -21,12 +22,23 @@ export default class Sku extends Component {
   };
 
   componentDidMount() {
-    const { id } = this.$instance.router.params;
+    const { id, boxId } = this.$instance.router.params;
     const { getSpuDetail } = this.props.store.sku;
     getSpuDetail(id).then(() => {
       const firstBox = this.props.store.sku.notEmptyBoxes[0];
-      this.setState({ currentBoxId: firstBox._id, currentBoxIndex: 0 });
-      this.getPrize(firstBox._id);
+      let currentBoxId;
+      let currentBoxIndex;
+
+      if (boxId) {
+        currentBoxId = boxId;
+        currentBoxIndex = this.props.store.sku.notEmptyBoxes.findIndex((item) => item._id === currentBoxId);
+      } else {
+        currentBoxId = firstBox._id;
+        currentBoxIndex = 0;
+      }
+
+      this.setState({ currentBoxId, currentBoxIndex });
+      this.getPrize(currentBoxId);
     });
   }
 
@@ -44,6 +56,7 @@ export default class Sku extends Component {
     this.setState({ currentBoxId: nextBox._id, currentBoxIndex: nextIndex });
     this.getPrize(nextBox._id);
   };
+
   prevBox = () => {
     const { notEmptyBoxes } = this.props.store.sku;
     if (notEmptyBoxes.length === 1) {
@@ -120,8 +133,15 @@ export default class Sku extends Component {
     this.setState({ checked: !this.state.checked });
   };
 
+  changeBox = () => {
+    const { id } = this.$instance.router.params;
+    wx.navigateTo({
+      url: `/pages/boxSelect/index?id=${id}`,
+    });
+  };
+
   render() {
-    const { detail, boxes, prizeList, notEmptyBoxes } = this.props.store.sku;
+    const { detail, boxes, prizeList, notEmptyBoxes, toggleRecordVisible } = this.props.store.sku;
     return (
       <View className="sku">
         <View className="header">
@@ -129,7 +149,7 @@ export default class Sku extends Component {
             <Image src={detail.headPic} className="header-pic-img"></Image>
           </View>
           <View className="btn">
-            <View className="btn-record"></View>
+            <View className="btn-record" onClick={() => toggleRecordVisible(true)}></View>
             <View className="btn-price">{detail.originPrice}</View>
           </View>
         </View>
@@ -166,7 +186,7 @@ export default class Sku extends Component {
           </View>
 
           <View className="bottom">
-            <View className="bottom-change"></View>
+            <View className="bottom-change" onClick={this.changeBox}></View>
             <View className="bottom-all" onClick={() => this.onShow('all')}></View>
           </View>
         </View>
@@ -180,6 +200,7 @@ export default class Sku extends Component {
         </Popup>
         <LoginDialog></LoginDialog>
         <LotteryDialog></LotteryDialog>
+        <PrizeRecord></PrizeRecord>
       </View>
     );
   }

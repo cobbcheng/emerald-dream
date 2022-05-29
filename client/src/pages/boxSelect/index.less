@@ -42,6 +42,7 @@
   padding: 20px;
   background: #2a2c2d;
   margin-bottom: 30px;
+  position: relative;
   &-right {
     flex: 1;
     margin-left: 30px;
@@ -62,5 +63,23 @@
   &-item {
     margin-right: 20px;
     margin-bottom: 10px;
+  }
+}
+
+.sold-out {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  &-icon {
+    width: 188px;
+    height: 86px;
+    background: url(https://7969-yifanshang-8g5d7nxddf660e3e-1310253199.tcb.qcloud.la/ui/icon_empty_big.png?sign=0121174358b0385af5be37ded34aa6b0&t=1653646194)
+      no-repeat center/cover;
   }
 }
