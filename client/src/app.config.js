@@ -8,6 +8,7 @@ export default defineAppConfig({
     'pages/address/index',
     'pages/addressEdit/index',
     'pages/boxSelect/index',
+    'pages/webview/index',
   ],
   window: {
     backgroundTextStyle: 'dark',

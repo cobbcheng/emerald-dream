@@ -5,6 +5,11 @@ import './index.less';
 @inject('store')
 @observer
 export default class Sku extends Component {
+  openUrl = (url) => {
+    wx.navigateTo({
+      url: `/pages/webview/index?url=${url}`,
+    });
+  };
   render() {
     const { userInfo } = this.props.store.userInfo;
     return (
@@ -32,7 +37,10 @@ export default class Sku extends Component {
           <View className="item">
             用户协议 <View className="arrow-icon"></View>
           </View>
-          <View className="item">
+          <View
+            className="item"
+            onClick={() => this.openUrl('https://yifanshang-8g5d7nxddf660e3e-1310253199.tcloudbaseapp.com/h5/#/pp')}
+          >
             隐私政策 <View className="arrow-icon"></View>
           </View>
         </View>

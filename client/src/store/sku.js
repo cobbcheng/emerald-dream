@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import { getCloud } from '@/helper/cloud';
 
 class Sku {
@@ -20,10 +20,23 @@ class Sku {
   @observable lotteryDialogVisible = false;
   @observable lotteryDialogInfo = [];
 
-  get notEmptyBoxes() {
+  @computed get notEmptyBoxes() {
     return this.boxes.filter((box) => {
       return box.left > 0;
     });
+  }
+  @computed get prizeStat() {
+    const total = this.prizeList.reduce((total, item) => {
+      return total + item.total;
+    }, 0);
+    const left = this.prizeList.reduce((acc, cur) => {
+      return acc + cur.left;
+    }, 0);
+
+    return {
+      total,
+      left,
+    };
   }
 
   @action.bound
@@ -66,7 +79,7 @@ class Sku {
 
   @action.bound
   getPrizeList(boxId) {
-    this.callFunction({
+    return this.callFunction({
       name: 'getSku',
       data: {
         id: boxId,
@@ -79,6 +92,7 @@ class Sku {
         if (a > b) return 1;
         return 0;
       });
+      return Promise.resolve();
     });
   }
 

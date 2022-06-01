@@ -2,7 +2,7 @@
   "miniprogramRoot": "client/dist/",
   "cloudfunctionRoot": "cloud/functions/",
   "projectname": "emerald-dream",
-  "description": "日贩一番赏",
+  "description": "项目配置文件，详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
   "appid": "wx56837d0de038457e",
   "setting": {
     "urlCheck": true,
@@ -40,9 +40,20 @@
     "minifyWXML": true,
     "showES6CompileOption": false,
     "useCompilerPlugins": false,
-    "ignoreUploadUnusedFiles": true
+    "ignoreUploadUnusedFiles": true,
+    "useStaticServer": true
   },
   "compileType": "miniprogram",
-  "cloudfunctionTemplateRoot": "cloudfunctionTemplate",
-  "condition": {}
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
+  "condition": {},
+  "libVersion": "2.24.4",
+  "srcMiniprogramRoot": "client/dist/",
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  }
 }

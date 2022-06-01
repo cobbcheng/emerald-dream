@@ -7,6 +7,7 @@ import PricePopup from './components/PricePopup';
 import LotteryDialog from './components/LotteryDialog';
 import PrizeRecord from './components/PrizeRecord';
 import LoginDialog from '../../components/LoginDialog/index';
+import CommonImage from '../../components/CommonImage';
 import './index.less';
 @inject('store')
 @observer
@@ -24,22 +25,27 @@ export default class Sku extends Component {
   componentDidMount() {
     const { id, boxId } = this.$instance.router.params;
     const { getSpuDetail } = this.props.store.sku;
-    getSpuDetail(id).then(() => {
-      const firstBox = this.props.store.sku.notEmptyBoxes[0];
-      let currentBoxId;
-      let currentBoxIndex;
+    wx.showLoading();
+    getSpuDetail(id)
+      .then(() => {
+        const firstBox = this.props.store.sku.notEmptyBoxes[0];
+        let currentBoxId;
+        let currentBoxIndex;
 
-      if (boxId) {
-        currentBoxId = boxId;
-        currentBoxIndex = this.props.store.sku.notEmptyBoxes.findIndex((item) => item._id === currentBoxId);
-      } else {
-        currentBoxId = firstBox._id;
-        currentBoxIndex = 0;
-      }
+        if (boxId) {
+          currentBoxId = boxId;
+          currentBoxIndex = this.props.store.sku.notEmptyBoxes.findIndex((item) => item._id === currentBoxId);
+        } else {
+          currentBoxId = firstBox._id;
+          currentBoxIndex = 0;
+        }
 
-      this.setState({ currentBoxId, currentBoxIndex });
-      this.getPrize(currentBoxId);
-    });
+        this.setState({ currentBoxId, currentBoxIndex });
+        return this.getPrize(currentBoxId);
+      })
+      .then(() => {
+        wx.hideLoading();
+      });
   }
 
   nextBox = () => {
@@ -114,7 +120,7 @@ export default class Sku extends Component {
 
   getPrize(boxId) {
     const { getPrizeList } = this.props.store.sku;
-    getPrizeList(boxId);
+    return getPrizeList(boxId);
   }
 
   onClose = () => {
@@ -141,7 +147,7 @@ export default class Sku extends Component {
   };
 
   render() {
-    const { detail, boxes, prizeList, notEmptyBoxes, toggleRecordVisible } = this.props.store.sku;
+    const { detail, boxes, prizeList, notEmptyBoxes, toggleRecordVisible, prizeStat } = this.props.store.sku;
     return (
       <View className="sku">
         <View className="header">
@@ -159,7 +165,7 @@ export default class Sku extends Component {
           <View className="tab-info">
             第 <Text className="tab-info-number">{this.state.currentBoxIndex + 1}</Text>/{boxes.length} 箱 &nbsp;
             赏品余量&nbsp;
-            <Text className="tab-info-number">33</Text>/{prizeList.length}
+            <Text className="tab-info-number">{prizeStat.left}</Text>/{prizeStat.total}
           </View>
           <View className="tab-btn tab-next" onClick={this.nextBox}></View>
         </View>
@@ -167,7 +173,7 @@ export default class Sku extends Component {
           {prizeList.map((item) => (
             <View className="item">
               <View className="item-pic">
-                <Image className="item-pic-detail" src={item.pic}></Image>
+                <CommonImage className="item-pic-detail" src={item.pic}></CommonImage>
                 <View className="item-left">
                   {item.left}/{item.total}
                 </View>
