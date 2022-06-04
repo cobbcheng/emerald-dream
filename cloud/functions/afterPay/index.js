@@ -77,6 +77,20 @@ exports.main = async (event, context) => {
       });
     });
     db.collection('yfs_product').add({ data: productTable });
+    db.collection('yfs_order').where({
+      skuId,
+      isProvide: false,
+    }).count().then(res => {
+      if(res.data === 0) {
+        db.collection('yfs_sku').where({
+          _id: skuId,
+        }).update({
+          data: {
+            isEmpty: true,
+          },
+        });
+      }
+    })
   };
 
   let res = {};

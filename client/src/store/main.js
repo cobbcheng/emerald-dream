@@ -4,18 +4,19 @@ import { getCloud } from '@/helper/cloud';
 class MainPage {
   constructor() {
     this.db = getCloud().db;
+    this.callFunction = getCloud().callFunction;
   }
   @observable spuList = [];
   @observable banner = [];
 
   @action.bound
   loadList() {
-    this.db
-      .collection('yfs_spu')
-      .get()
-      .then((res) => {
-        this.spuList = res.data;
-      });
+    this.callFunction({
+      name: 'spuList',
+      data: {},
+    }).then((res) => {
+      this.spuList = res.result;
+    });
   }
 
   @action.bound

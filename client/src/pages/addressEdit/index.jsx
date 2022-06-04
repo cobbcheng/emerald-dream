@@ -118,9 +118,6 @@ export default class AddressEdit extends Component {
           ></Field>
         </View>
 
-        <View className="button cancel" onClick={this.cancel}>
-          取消
-        </View>
         <View className="button" onClick={this.save}>
           保存
         </View>

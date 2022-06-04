@@ -45,8 +45,26 @@ export default class Package extends Component {
       : 'https://7969-yifanshang-8g5d7nxddf660e3e-1310253199.tcb.qcloud.la/ui/tab_btn_not_gray.png';
   }
 
+  get stat() {
+    const list = [
+      {
+        text: '未发货',
+        bg: 'https://7969-yifanshang-8g5d7nxddf660e3e-1310253199.tcb.qcloud.la/ui/icon_default.png',
+      },
+      {
+        text: '已发货',
+        bg: 'https://7969-yifanshang-8g5d7nxddf660e3e-1310253199.tcb.qcloud.la/ui/icon_default_gray.png',
+      },
+      {
+        text: '发货失败',
+        bg: 'https://7969-yifanshang-8g5d7nxddf660e3e-1310253199.tcb.qcloud.la/ui/icon_default.png',
+      },
+    ];
+
+    return list;
+  }
+
   render() {
-    const stat = ['未发货', '已发货', '发货失败'];
     return (
       <ScrollView
         className="package"
@@ -75,7 +93,9 @@ export default class Package extends Component {
                 <View className="item-title">{pkg.item.name}</View>
                 <View className="item-type">{pkg.item.level}赏</View>
                 {/* <View className="item-time">{pkg.item._createTime}</View> */}
-                <View className="item-status">{stat[pkg.status]}</View>
+                <View className="item-status" style={{ backgroundImage: `url(${this.stat[pkg.status].bg})` }}>
+                  {this.stat[pkg.status].text}
+                </View>
               </View>
             </View>
           ))}
