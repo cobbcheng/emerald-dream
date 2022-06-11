@@ -1,7 +1,6 @@
 import { Component } from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { observer, inject } from 'mobx-react';
-import { Checkbox } from '@antmjs/vantui';
 import CommonCheckbox from '@/components/CommonCheckbox';
 import './index.less';
 
@@ -38,6 +37,7 @@ export default class PricePopup extends Component {
       clientEnd: () => {
         this.props.onClose();
       },
+      allEnd: this.props.loadData,
     });
   };
 
@@ -69,6 +69,7 @@ export default class PricePopup extends Component {
             <CommonCheckbox checked={this.state.checked} onChange={this.onChange}></CommonCheckbox> 同意{' '}
             <Text className="popup-highlight">《用户购买协议》</Text>、
             <Text className="popup-highlight">《发货通知》</Text>
+            <View className="check-range" onClick={this.onChange}></View>
           </View>
           <View className="popup-button" onClick={this.pay}>
             微信支付

@@ -102,36 +102,43 @@ class Sku {
       title: '支付中',
     });
 
-    const res = await this.callFunction({
-      name: 'doPay',
-      data: { payTotal, productNum, skuId },
-    });
-    if (res.result.code !== 0) {
+    try {
+      const res = await this.callFunction({
+        name: 'doPay',
+        data: { payTotal, productNum, skuId },
+      });
+      if (res.result.code !== 0) {
+        wx.hideLoading();
+        wx.showToast({
+          title: '支付失败',
+        });
+        return;
+      }
+      const { pay, uuid } = res.result;
+      await wx.requestPayment({
+        ...pay,
+      });
+      clientEnd();
+      wx.hideLoading();
+      await this.callFunction({ name: 'payCallback' });
+      const order = await this.callFunction({
+        name: 'afterPay',
+        data: {
+          skuId,
+          num: productNum,
+          payUid: uuid,
+        },
+      });
+
+      this.lotteryDialogInfo = order.result;
+      this.lotteryDialogVisible = true;
+      allEnd(order.result);
+    } catch (e) {
       wx.hideLoading();
       wx.showToast({
         title: '支付失败',
       });
-      return;
     }
-    const { pay, uuid } = res.result;
-    await wx.requestPayment({
-      ...pay,
-    });
-    clientEnd();
-    wx.hideLoading();
-    await this.callFunction({ name: 'payCallback' });
-    const order = await this.callFunction({
-      name: 'afterPay',
-      data: {
-        skuId,
-        num: productNum,
-        payUid: uuid,
-      },
-    });
-
-    this.lotteryDialogInfo = order.result;
-    this.lotteryDialogVisible = true;
-    allEnd(order.result);
   }
 }
 

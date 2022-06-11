@@ -23,6 +23,10 @@ export default class Sku extends Component {
   };
 
   componentDidMount() {
+    this.loadData();
+  }
+
+  loadData = () => {
     const { id, boxId } = this.$instance.router.params;
     const { getSpuDetail } = this.props.store.sku;
     wx.showLoading();
@@ -46,7 +50,7 @@ export default class Sku extends Component {
       .then(() => {
         wx.hideLoading();
       });
-  }
+  };
 
   nextBox = () => {
     const { notEmptyBoxes } = this.props.store.sku;
@@ -202,7 +206,12 @@ export default class Sku extends Component {
           style="background-color: transparent;"
           onClose={this.onClose}
         >
-          <PricePopup onClose={this.onClose} popupState={this.popupState} currentBoxId={this.state.currentBoxId} />
+          <PricePopup
+            onClose={this.onClose}
+            popupState={this.popupState}
+            loadData={this.loadData}
+            currentBoxId={this.state.currentBoxId}
+          />
         </Popup>
         <LoginDialog></LoginDialog>
         <LotteryDialog></LotteryDialog>

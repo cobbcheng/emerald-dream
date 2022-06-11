@@ -68,11 +68,14 @@ export default class AddressEdit extends Component {
       .then((res) => {
         const { _id } = res;
         this.props.store.address.setDefaultAddress({ addressId: _id, id: this.props.store.userInfo.openid });
+        this.props.store.address.getAddressList();
         wx.showToast({
           title: '保存成功',
         });
 
-        this.cancel();
+        setTimeout(() => {
+          this.cancel();
+        }, 200);
       });
   };
 
