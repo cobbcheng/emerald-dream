@@ -1,5 +1,5 @@
 {
-  "name": "afterPay",
+  "name": "refundCallback",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,8 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "md5": "^2.3.0",
-    "uuid": "^8.3.2",
-    "wx-server-sdk": "~2.6.1"
+    "wx-server-sdk": "~2.6.2"
   }
 }

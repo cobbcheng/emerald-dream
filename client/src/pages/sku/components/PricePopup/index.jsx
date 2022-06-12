@@ -20,12 +20,21 @@ export default class PricePopup extends Component {
   };
 
   pay = () => {
-    const { pay } = this.props.store.sku;
+    const { pay, prizeStat } = this.props.store.sku;
     const { popupState, currentBoxId } = this.props;
+    const { left } = prizeStat;
 
     if (!this.state.checked) {
       wx.showToast({
         title: '请同意用户购买协议',
+        icon: 'none',
+      });
+      return;
+    }
+
+    if (left < popupState.num) {
+      wx.showToast({
+        title: '库存不足',
         icon: 'none',
       });
       return;

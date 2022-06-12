@@ -13,12 +13,12 @@ const _ = db.command;
 exports.main = async (event, context) => {
   const { OPENID } = cloud.getWXContext();
   const result = (await db.collection('yfs_pay').doc(OPENID).get()).data;
-  console.log(result);
+
   const res = await cloud.cloudPay.queryOrder({
     sub_mch_id: '1623194504',
     out_trade_no: result.uuid,
   });
-  console.log(res);
+
   if (res.resultCode === 'SUCCESS') {
     console.log(res.resultCode);
     await db
@@ -32,6 +32,6 @@ exports.main = async (event, context) => {
         },
       });
   }
-  console.log(event);
+
   return { errcode: 0 };
 };

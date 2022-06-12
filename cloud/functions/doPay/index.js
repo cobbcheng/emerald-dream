@@ -69,6 +69,7 @@ exports.main = async (event, context) => {
       skuId,
       payment: res.payment,
       status: 'NOTPAY',
+      _createTime: Date.now(),
     },
   });
 
