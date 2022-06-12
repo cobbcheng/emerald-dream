@@ -127,6 +127,7 @@ class Sku {
           skuId,
           num: productNum,
           payUid: uuid,
+          payTotal,
         },
       });
 

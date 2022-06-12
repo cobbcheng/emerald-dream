@@ -9,10 +9,11 @@ const db = cloud.database({
 });
 const _ = db.command;
 const $ = db.command.aggregate;
+const { refund, needRefund }  = require('./refund');
 
 // 云函数入口函数
 exports.main = async (event, context) => {
-  const { skuId, num, payUid } = event;
+  const { skuId, num, payUid, payTotal } = event;
   const { OPENID } = cloud.getWXContext();
 
   const runTr = async (tr) => {
@@ -97,7 +98,16 @@ exports.main = async (event, context) => {
   try {
     const { result, order } = await db.runTransaction(runTr);
     res = result;
-    writeData({ order, result });
+    if (needRefund({ orderList: order.list, num })) {
+      refund({
+        cloudPay: cloud.cloudPay,
+        db,
+        fee: payTotal,
+        openId: OPENID,
+      })
+    } else {
+       writeData({ order, result });
+    }
   } catch (e) {
     res = {
       error: e,
