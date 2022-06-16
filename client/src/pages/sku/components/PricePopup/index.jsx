@@ -19,6 +19,12 @@ export default class PricePopup extends Component {
     this.setState({ checked: !this.state.checked });
   };
 
+  openUrl = (url) => {
+    wx.navigateTo({
+      url: `/pages/webview/index?url=${url}`,
+    });
+  };
+
   pay = () => {
     const { pay, prizeStat } = this.props.store.sku;
     const { popupState, currentBoxId } = this.props;
@@ -76,8 +82,19 @@ export default class PricePopup extends Component {
           </View>
           <View className="popup-protocol">
             <CommonCheckbox checked={this.state.checked} onChange={this.onChange}></CommonCheckbox> 同意{' '}
-            <Text className="popup-highlight">《用户购买协议》</Text>、
-            <Text className="popup-highlight">《发货通知》</Text>
+            <Text
+              className="popup-highlight"
+              onClick={() => this.openUrl('https://yifanshang-8g5d7nxddf660e3e-1310253199.tcloudbaseapp.com/h5/#/ua')}
+            >
+              《用户购买协议》
+            </Text>
+            、
+            <Text
+              className="popup-highlight"
+              onClick={() => this.openUrl('https://yifanshang-8g5d7nxddf660e3e-1310253199.tcloudbaseapp.com/h5/#/pp')}
+            >
+              《隐私政策》
+            </Text>
             <View className="check-range" onClick={this.onChange}></View>
           </View>
           <View className="popup-button" onClick={this.pay}>

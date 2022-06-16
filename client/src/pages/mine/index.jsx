@@ -34,7 +34,10 @@ export default class Sku extends Component {
           <View className="item">
             联系客服 <View className="arrow-icon"></View>
           </View>
-          <View className="item">
+          <View
+            className="item"
+            onClick={() => this.openUrl('https://yifanshang-8g5d7nxddf660e3e-1310253199.tcloudbaseapp.com/h5/#/ua')}
+          >
             用户协议 <View className="arrow-icon"></View>
           </View>
           <View
