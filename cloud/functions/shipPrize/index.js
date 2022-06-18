@@ -11,7 +11,12 @@ const _ = db.command;
 
 // 云函数入口函数
 exports.main = async (event, context) => {
-  const { list } = event;
+  const { list, skip } = event;
+
+  // 不足5个发货，需要缴纳18邮费
+  if (list.length < 5 && !skip) {
+    return 'postage';
+  }
 
   try {
     await db

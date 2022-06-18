@@ -13,17 +13,25 @@ const _ = db.command;
 exports.main = async (event, context) => {
   const uid = md5(uuidv4());
   const openId = event.userInfo.openId;
-  const { payTotal, productNum, skuId } = event;
+  const {
+    payTotal,
+    productNum,
+    skuId = null,
+    body = '一番赏支付',
+    functionName = 'payCallback',
+    payType = 'default',
+    productList = [],
+  } = event;
 
   const res = await cloud.cloudPay.unifiedOrder({
-    body: '一番赏支付',
+    body,
     outTradeNo: uid,
     // spbillCreateIp: JSON.parse(context.environment).WX_CLIENTIP || '127.0.0.1',
     spbillCreateIp: '127.0.0.1',
     subMchId: '1623194504',
     totalFee: 1,
     envId: 'yifanshang-8g5d7nxddf660e3e',
-    functionName: 'payCallback',
+    functionName,
     tradeType: 'JSAPI',
   });
   if (res.resultCode !== 'SUCCESS') {
@@ -60,18 +68,38 @@ exports.main = async (event, context) => {
       });
   }
 
-  await db.collection('yfs_trade').add({
-    data: {
-      uid,
-      userid: openId,
-      payTotal,
-      productNum,
-      skuId,
-      payment: res.payment,
-      status: 'NOTPAY',
-      _createTime: Date.now(),
-    },
-  });
+  if (payType === 'default') {
+    await db.collection('yfs_trade').add({
+      data: {
+        uid,
+        userid: openId,
+        payTotal,
+        productNum,
+        skuId,
+        payment: res.payment,
+        status: 'NOTPAY',
+        _createTime: Date.now(),
+      },
+    });
+  }
+
+  if (payType === 'postage') {
+    await db.collection('yfs_postage').add({
+      data: {
+        uid,
+        userid: openId,
+        payTotal,
+        payment: res.payment,
+        status: 'NOTPAY',
+        productList,
+        _createTime: Date.now(),
+      },
+    });
+  }
+
+  if (payType === 'recharge') {
+    // TODO
+  }
 
   return {
     code: 0,

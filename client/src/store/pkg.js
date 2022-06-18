@@ -12,6 +12,18 @@ class Package {
   @observable shipList = [];
   @observable shipPaging = 1;
 
+  @observable postageDialogVisible = false;
+
+  get productList() {
+    return this.shipList.filter((item) => item.checked).map((t) => t._id);
+  }
+
+  @action.bound
+  resetShipList() {
+    this.shipList = [];
+    this.shipPaging = 1;
+  }
+
   @action.bound
   getShipList() {
     this.callFunction({
@@ -26,6 +38,7 @@ class Package {
         ...res.result.list.map((item) => {
           return {
             ...item,
+            checked: false,
             item: item.item[0],
           };
         }),
@@ -56,7 +69,7 @@ class Package {
 
   @action.bound
   setAllCheck(isChecked) {
-    this.pkgList = this.pkgList.map((item) => {
+    this.shipList = this.shipList.map((item) => {
       item.checked = isChecked;
       return item;
     });
@@ -64,7 +77,7 @@ class Package {
 
   @action.bound
   setItemCheck(id) {
-    this.pkgList = this.pkgList.map((item) => {
+    this.shipList = this.shipList.map((item) => {
       if (item._id === id) {
         item.checked = !item.checked;
       }
@@ -73,14 +86,26 @@ class Package {
   }
 
   @action.bound
-  async shipNow() {
-    const shipPkg = this.pkgList.filter((item) => item.checked).map((t) => t._id);
+  async shipNow({ skip = false }) {
+    const shipPkg = this.productList;
+    if (shipPkg.length < 5 && !skip) {
+      this.postageDialogVisible = true;
+      return;
+    }
+
     const res = await this.callFunction({
       name: 'shipPrize',
       data: {
         list: shipPkg,
+        skip,
       },
     });
+
+    if (res.result === 'postage') {
+      this.postageDialogVisible = true;
+      return;
+    }
+
     if (res.result === 'success') {
       wx.showToast({
         title: '发货成功',
@@ -94,6 +119,46 @@ class Package {
       setTimeout(() => {
         wx.navigateBack();
       }, 2000);
+    }
+  }
+
+  @action.bound
+  hidePostageDialog() {
+    this.postageDialogVisible = false;
+  }
+
+  @action.bound
+  async payPostage({ callback = () => {} }) {
+    wx.showLoading({
+      title: '支付中',
+    });
+    const productList = this.productList;
+    try {
+      const res = await this.callFunction({
+        name: 'doPay',
+        data: { payTotal: 1800, body: '一番赏支付-邮费', payType: 'postage', productList },
+      });
+      if (res.result.code !== 0) {
+        wx.hideLoading();
+        wx.showToast({
+          title: '支付失败',
+        });
+        return;
+      }
+      const { pay } = res.result;
+
+      await wx.requestPayment({
+        ...pay,
+      });
+      wx.hideLoading();
+      callback();
+      await this.callFunction({ name: 'payCallback', data: { type: 'postage' } });
+      this.shipNow({ skip: true });
+    } catch (e) {
+      wx.hideLoading();
+      wx.showToast({
+        title: '支付失败',
+      });
     }
   }
 }

@@ -9,16 +9,23 @@ export default class CommonCheckbox extends Component {
     inactiveIcon: 'https://7969-yifanshang-8g5d7nxddf660e3e-1310253199.tcb.qcloud.la/ui/checkbox_nocheck.png',
   };
 
+  get checkValue() {
+    if (!this.props.checked) {
+      return false;
+    }
+    return this.props.checked;
+  }
+
   render() {
     return (
       <Checkbox
-        value={this.props.checked}
+        value={this.checkValue}
         onChange={this.props.onChange}
         renderIcon={
           <View className="ic flex">
             <Image
-              className={this.props.checked ? 'ic' : 'ic-28'}
-              src={this.props.checked ? this.state.activeIcon : this.state.inactiveIcon}
+              className={this.checkValue ? 'ic' : 'ic-28'}
+              src={this.checkValue ? this.state.activeIcon : this.state.inactiveIcon}
             />
           </View>
         }

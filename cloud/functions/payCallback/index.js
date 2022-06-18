@@ -12,6 +12,7 @@ const _ = db.command;
 // 云函数入口函数
 exports.main = async (event, context) => {
   const { OPENID } = cloud.getWXContext();
+  const { type = 'default' } = event;
   const result = (await db.collection('yfs_pay').doc(OPENID).get()).data;
 
   const res = await cloud.cloudPay.queryOrder({
@@ -20,9 +21,12 @@ exports.main = async (event, context) => {
   });
 
   if (res.resultCode === 'SUCCESS') {
-    console.log(res.resultCode);
+    const map = {
+      default: 'yfs_trade',
+      postage: 'yfs_postage',
+    };
     await db
-      .collection('yfs_trade')
+      .collection(map[type])
       .where({
         uid: result.uuid,
       })
