@@ -1,15 +1,44 @@
 import { Component } from 'react';
-import { View, Image } from '@tarojs/components';
+import { View, Image, Button } from '@tarojs/components';
 import { observer, inject } from 'mobx-react';
+import { Overlay } from '@antmjs/vantui';
+import { getCloud } from '@/helper/cloud';
 import './index.less';
 @inject('store')
 @observer
 export default class Sku extends Component {
+  state = {
+    showQr: false,
+    src: '',
+  };
+
+  componentDidMount() {
+    const { db } = getCloud();
+    db.collection('yfs_config')
+      .limit(1)
+      .get()
+      .then((res) => {
+        const data = res.data[0];
+        this.setState({
+          src: data.group_qr,
+        });
+      });
+  }
+
+  hideQr = () => {
+    this.setState({ showQr: false });
+  };
+
+  showQr = () => {
+    this.setState({ showQr: true });
+  };
+
   openUrl = (url) => {
     wx.navigateTo({
       url: `/pages/webview/index?url=${url}`,
     });
   };
+
   render() {
     const { userInfo } = this.props.store.userInfo;
     return (
@@ -21,19 +50,16 @@ export default class Sku extends Component {
             </View>
             <View className="username">{userInfo.nickName}</View>
           </View>
-          <Image
-            className="link"
-            src="https://7969-yifanshang-8g5d7nxddf660e3e-1310253199.tcb.qcloud.la/ui/btn_group.png"
-          ></Image>
+          <View className="link" onClick={this.showQr}></View>
         </View>
 
         <View className="button">
           <View className="item" onClick={() => wx.navigateTo({ url: '/pages/address/index' })}>
             地址管理 <View className="arrow-icon"></View>
           </View>
-          <View className="item">
+          <Button className="item" open-type="contact">
             联系客服 <View className="arrow-icon"></View>
-          </View>
+          </Button>
           <View
             className="item"
             onClick={() => this.openUrl('https://yifanshang-8g5d7nxddf660e3e-1310253199.tcloudbaseapp.com/h5/#/ua')}
@@ -47,6 +73,10 @@ export default class Sku extends Component {
             隐私政策 <View className="arrow-icon"></View>
           </View>
         </View>
+
+        <Overlay show={this.state.showQr} onClick={this.hideQr}>
+          <Image src={this.state.src} className="qr-img" />
+        </Overlay>
       </View>
     );
   }
