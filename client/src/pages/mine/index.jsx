@@ -1,14 +1,12 @@
 import { Component } from 'react';
 import { View, Image, Button } from '@tarojs/components';
 import { observer, inject } from 'mobx-react';
-import { Overlay } from '@antmjs/vantui';
 import { getCloud } from '@/helper/cloud';
 import './index.less';
 @inject('store')
 @observer
-export default class Sku extends Component {
+export default class Mine extends Component {
   state = {
-    showQr: false,
     src: '',
   };
 
@@ -25,12 +23,11 @@ export default class Sku extends Component {
       });
   }
 
-  hideQr = () => {
-    this.setState({ showQr: false });
-  };
-
   showQr = () => {
-    this.setState({ showQr: true });
+    wx.previewImage({
+      current: this.state.src,
+      urls: [this.state.src],
+    });
   };
 
   openUrl = (url) => {
@@ -73,10 +70,6 @@ export default class Sku extends Component {
             隐私政策 <View className="arrow-icon"></View>
           </View>
         </View>
-
-        <Overlay show={this.state.showQr} onClick={this.hideQr}>
-          <Image src={this.state.src} className="qr-img" />
-        </Overlay>
       </View>
     );
   }
