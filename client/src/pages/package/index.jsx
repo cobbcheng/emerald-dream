@@ -46,7 +46,7 @@ export default class Package extends Component {
   }
 
   get stat() {
-    const list = [
+    return [
       {
         text: '未发货',
         bg: 'https://7969-yifanshang-8g5d7nxddf660e3e-1310253199.tcb.qcloud.la/ui/icon_default.png',
@@ -60,8 +60,6 @@ export default class Package extends Component {
         bg: 'https://7969-yifanshang-8g5d7nxddf660e3e-1310253199.tcb.qcloud.la/ui/icon_default.png',
       },
     ];
-
-    return list;
   }
 
   render() {
