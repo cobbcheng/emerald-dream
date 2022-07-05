@@ -119,7 +119,7 @@ class Sku {
         ...pay,
       });
       clientEnd();
-      wx.hideLoading();
+
       await this.callFunction({ name: 'payCallback' });
       const order = await this.callFunction({
         name: 'afterPay',
@@ -130,6 +130,7 @@ class Sku {
           payTotal,
         },
       });
+      wx.hideLoading();
 
       this.lotteryDialogInfo = order.result;
       this.lotteryDialogVisible = true;
