@@ -26,8 +26,8 @@ export default class PricePopup extends Component {
   };
 
   pay = () => {
-    const { pay, prizeStat } = this.props.store.sku;
-    const { popupState, currentBoxId } = this.props;
+    const { pay, prizeStat, currentBoxId } = this.props.store.sku;
+    const { popupState } = this.props;
     const { left } = prizeStat;
 
     if (!this.state.checked) {

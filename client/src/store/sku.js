@@ -1,15 +1,23 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action, computed, observe } from 'mobx';
 import { getCloud } from '@/helper/cloud';
+import dayjs from 'dayjs';
 
 class Sku {
   constructor() {
     this.db = getCloud().db;
     this.callFunction = getCloud().callFunction;
+    observe(this, 'recordVisible', ({ newValue }) => {
+      if (newValue) {
+        console.log('recordVisible', newValue);
+        this.getRecordList({ reset: true });
+      }
+    });
   }
 
   @observable boxes = [];
   @observable prizeList = [];
   @observable detail = {};
+  @observable currentBoxId = '';
 
   // 中奖记录
   @observable recordVisible = false;
@@ -45,14 +53,24 @@ class Sku {
   }
 
   @action.bound
-  getRecordList() {
+  getRecordList({ reset }) {
+    if (reset === true) {
+      this.recordPaging = 1;
+      this.recordList = [];
+    }
     this.callFunction({
       name: 'getPrizeRecord',
       data: {
         page: this.recordPaging,
+        skuId: this.currentBoxId,
       },
     }).then((res) => {
-      this.recordList.push(...res.result);
+      this.recordList.push(
+        ...res.result.map((v) => {
+          v._createTime = dayjs(v._createTime).format('YYYY-MM-DD HH:mm:ss');
+          return v;
+        }),
+      );
       this.recordPaging += 1;
     });
   }
@@ -141,6 +159,12 @@ class Sku {
         title: '支付失败',
       });
     }
+  }
+
+  @action.bound
+  setCurrentBoxId(id) {
+    console.log('setCurrentBoxId', id);
+    this.currentBoxId = id;
   }
 }
 

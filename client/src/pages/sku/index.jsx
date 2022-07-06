@@ -28,7 +28,7 @@ export default class Sku extends Component {
 
   loadData = () => {
     const { id, boxId } = this.$instance.router.params;
-    const { getSpuDetail } = this.props.store.sku;
+    const { getSpuDetail, setCurrentBoxId } = this.props.store.sku;
     wx.showLoading();
     getSpuDetail(id)
       .then(() => {
@@ -44,7 +44,8 @@ export default class Sku extends Component {
           currentBoxIndex = 0;
         }
 
-        this.setState({ currentBoxId, currentBoxIndex });
+        this.setState({ currentBoxIndex });
+        setCurrentBoxId(currentBoxId);
         return this.getPrize(currentBoxId);
       })
       .then(() => {
@@ -53,7 +54,7 @@ export default class Sku extends Component {
   };
 
   nextBox = () => {
-    const { notEmptyBoxes } = this.props.store.sku;
+    const { notEmptyBoxes, setCurrentBoxId } = this.props.store.sku;
     if (notEmptyBoxes.length === 1) {
       return;
     }
@@ -63,12 +64,13 @@ export default class Sku extends Component {
       return;
     }
     const nextBox = notEmptyBoxes[nextIndex];
-    this.setState({ currentBoxId: nextBox._id, currentBoxIndex: nextIndex });
+    this.setState({ currentBoxIndex: nextIndex });
+    setCurrentBoxId(nextBox._id);
     this.getPrize(nextBox._id);
   };
 
   prevBox = () => {
-    const { notEmptyBoxes } = this.props.store.sku;
+    const { notEmptyBoxes, setCurrentBoxId } = this.props.store.sku;
     if (notEmptyBoxes.length === 1) {
       return;
     }
@@ -78,12 +80,13 @@ export default class Sku extends Component {
       return;
     }
     const prevBox = notEmptyBoxes[prevIndex];
-    this.setState({ currentBoxId: prevBox._id, currentBoxIndex: prevIndex });
+    this.setState({ currentBoxIndex: prevIndex });
+    setCurrentBoxId(prevBox._id);
     this.getPrize(prevBox._id);
   };
 
   get currentBox() {
-    const { currentBoxId } = this.state;
+    const { currentBoxId } = this.props.store.sku;
     const { boxes } = this.props.store.sku;
     return boxes.find((item) => item._id === currentBoxId);
   }
@@ -208,12 +211,7 @@ export default class Sku extends Component {
           style="background-color: transparent;"
           onClose={this.onClose}
         >
-          <PricePopup
-            onClose={this.onClose}
-            popupState={this.popupState}
-            loadData={this.loadData}
-            currentBoxId={this.state.currentBoxId}
-          />
+          <PricePopup onClose={this.onClose} popupState={this.popupState} loadData={this.loadData} />
         </Popup>
         <LoginDialog></LoginDialog>
         <LotteryDialog></LotteryDialog>

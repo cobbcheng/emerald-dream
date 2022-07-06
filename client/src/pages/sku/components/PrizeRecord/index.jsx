@@ -7,13 +7,9 @@ import './index.less';
 @inject('store')
 @observer
 export default class PrizeRecord extends Component {
-  componentDidMount() {
-    this.props.store.sku.getRecordList();
-  }
-
   loadMore = (e) => {
     console.log(e);
-    this.props.store.sku.getRecordList();
+    this.props.store.sku.getRecordList({});
   };
 
   render() {

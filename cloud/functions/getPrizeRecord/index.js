@@ -11,10 +11,13 @@ const _ = db.command;
 
 // 云函数入口函数
 exports.main = async (event, context) => {
-  const { page } = event;
+  const { page, skuId } = event;
   const record = await db
     .collection('yfs_product')
     .aggregate()
+    .match({
+      skuId,
+    })
     .lookup({
       from: 'user_info',
       localField: 'userId',
