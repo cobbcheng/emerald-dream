@@ -18,12 +18,12 @@ const refund = async ({ cloudPay, db, fee, openId }) => {
   }
   const uid = md5(uuidv4());
   const info = payInfo[0];
-  console.log(info)
+  console.log(info);
   const r = await cloudPay.refund({
     out_trade_no: info.uuid,
-		out_refund_no:`TK-${info.uuid}`,
-    total_fee: 1,
-    refund_fee: 1,
+    out_refund_no: `TK-${info.uuid}`,
+    total_fee: fee,
+    refund_fee: fee,
     envId: 'yifanshang-8g5d7nxddf660e3e',
     functionName: 'afterPay',
     sub_mch_id,
@@ -31,7 +31,7 @@ const refund = async ({ cloudPay, db, fee, openId }) => {
     refund_desc: '一番赏退款-商品售罄',
   });
 
-  console.log(r)
+  console.log(r);
 
   if (r.resultCode !== 'SUCCESS') {
     return {
@@ -40,27 +40,30 @@ const refund = async ({ cloudPay, db, fee, openId }) => {
     };
   }
   const temp = {
-    refund: r
-  }
+    refund: r,
+  };
   const resq = await cloudPay.queryOrder({
     sub_mch_id,
-    out_trade_no: info.uuid
-  })
-  if(resq.resultCode === 'SUCCESS'){
-    temp.status = resq.tradeState
+    out_trade_no: info.uuid,
+  });
+  if (resq.resultCode === 'SUCCESS') {
+    temp.status = resq.tradeState;
   }
-  await db.collection('yfs_trade').where({
-    uid: info.uuid
-  }).update({
-    data: temp
-  })
+  await db
+    .collection('yfs_trade')
+    .where({
+      uid: info.uuid,
+    })
+    .update({
+      data: temp,
+    });
 
   return {
     code: 0,
-  }
-}
+  };
+};
 
-exports.needRefund = ({orderList, num}) => {
-  return orderList.length < num;
-}
+exports.needRefund = ({ orderList, num }) => {
+  return orderList.length - 1 < num;
+};
 exports.refund = refund;

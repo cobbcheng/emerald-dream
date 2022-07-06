@@ -23,13 +23,16 @@ exports.main = async (event, context) => {
     productList = [],
   } = event;
 
+  // const realFee = payTotal * 100;
+  const realFee = 1;
+
   const res = await cloud.cloudPay.unifiedOrder({
     body,
     outTradeNo: uid,
     // spbillCreateIp: JSON.parse(context.environment).WX_CLIENTIP || '127.0.0.1',
     spbillCreateIp: '127.0.0.1',
     subMchId: '1623194504',
-    totalFee: 1,
+    totalFee: realFee,
     envId: 'yifanshang-8g5d7nxddf660e3e',
     functionName,
     tradeType: 'JSAPI',
@@ -73,7 +76,7 @@ exports.main = async (event, context) => {
       data: {
         uid,
         userid: openId,
-        payTotal,
+        payTotal: realFee,
         productNum,
         skuId,
         payment: res.payment,
@@ -88,7 +91,7 @@ exports.main = async (event, context) => {
       data: {
         uid,
         userid: openId,
-        payTotal,
+        payTotal: realFee,
         payment: res.payment,
         status: 'NOTPAY',
         productList,

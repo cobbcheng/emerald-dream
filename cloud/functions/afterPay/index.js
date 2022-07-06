@@ -9,16 +9,38 @@ const db = cloud.database({
 });
 const _ = db.command;
 const $ = db.command.aggregate;
-const { refund, needRefund }  = require('./refund');
+const { refund } = require('./refund');
 
 // 云函数入口函数
 exports.main = async (event, context) => {
   const { skuId, num, payUid, payTotal } = event;
   const { OPENID } = cloud.getWXContext();
+  const realFee = 1;
+  // const realFee = payTotal * 100;
 
   const runTr = async (tr) => {
+    // 是否抽终赏
+    let limit = num;
+    // 计算数量
+    const orderLen = await tr
+      .collection('yfs_order')
+      .where({
+        skuId,
+        isProvide: false,
+      })
+      .count();
+    if (orderLen.data < num + 1) {
+      return {
+        needRefund: true,
+      };
+    }
+
+    if (orderLen.total === num + 1) {
+      limit += 1;
+    }
+
     // 读
-    const order = await tr
+    let order = await tr
       .collection('yfs_order')
       .aggregate()
       .match({
@@ -28,7 +50,7 @@ exports.main = async (event, context) => {
       .sort({
         order: 1,
       })
-      .limit(num)
+      .limit(limit)
       .end();
 
     const itemList = await tr
@@ -78,35 +100,40 @@ exports.main = async (event, context) => {
       });
     });
     db.collection('yfs_product').add({ data: productTable });
-    db.collection('yfs_order').where({
-      skuId,
-      isProvide: false,
-    }).count().then(res => {
-      if(res.data === 0) {
-        db.collection('yfs_sku').where({
-          _id: skuId,
-        }).update({
-          data: {
-            isEmpty: true,
-          },
-        });
-      }
-    })
+    db.collection('yfs_order')
+      .where({
+        skuId,
+        isProvide: false,
+      })
+      .count()
+      .then((r) => {
+        if (r.total === 0) {
+          db.collection('yfs_sku')
+            .where({
+              _id: skuId,
+            })
+            .update({
+              data: {
+                isEmpty: true,
+              },
+            });
+        }
+      });
   };
 
   let res = {};
   try {
-    const { result, order } = await db.runTransaction(runTr);
+    const { result, order, needRefund } = await db.runTransaction(runTr);
     res = result;
-    if (needRefund({ orderList: order.list, num })) {
+    if (needRefund) {
       refund({
         cloudPay: cloud.cloudPay,
         db,
-        fee: payTotal,
+        fee: realFee,
         openId: OPENID,
-      })
+      });
     } else {
-       writeData({ order, result });
+      writeData({ order, result });
     }
   } catch (e) {
     res = {

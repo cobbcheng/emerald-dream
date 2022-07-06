@@ -26,16 +26,16 @@ class Sku {
     });
   }
   @computed get prizeStat() {
-    const total = this.prizeList.reduce((total, item) => {
-      return total + item.total;
+    const total = this.prizeList.reduce((t, item) => {
+      return t + item.total;
     }, 0);
     const left = this.prizeList.reduce((acc, cur) => {
       return acc + cur.left;
     }, 0);
 
     return {
-      total,
-      left,
+      total: total - 1,
+      left: left <= 0 ? 0 : left - 1,
     };
   }
 

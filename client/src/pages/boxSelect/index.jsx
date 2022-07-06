@@ -61,7 +61,7 @@ export default class BoxSelect extends Component {
               <View className="box" onClick={() => this.select(item)}>
                 <View className="box-left">
                   <View className="box-icon"></View>
-                  <View className="box-stat">剩余{item.all}张</View>
+                  <View className="box-stat">剩余{item.all - 1}张</View>
                 </View>
                 <View className="box-right">
                   {item.items.map((l) => {

@@ -20,7 +20,7 @@ export default class LotteryDialog extends Component {
     if (sorted.length === 0) {
       return '';
     }
-    return sorted[0].pic;
+    return sorted[sorted.length - 1].pic;
   }
 
   render() {

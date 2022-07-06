@@ -108,6 +108,8 @@ export default class Sku extends Component {
       result.num = prizeList.reduce((acc, cur) => {
         return acc + cur.left;
       }, 0);
+      // last 不算在内
+      result.num = result.num - 1;
     }
 
     const imgMap = {

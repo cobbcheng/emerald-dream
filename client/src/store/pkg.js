@@ -136,7 +136,7 @@ class Package {
     try {
       const res = await this.callFunction({
         name: 'doPay',
-        data: { payTotal: 1800, body: '一番赏支付-邮费', payType: 'postage', productList },
+        data: { payTotal: 18, body: '一番赏支付-邮费', payType: 'postage', productList },
       });
       if (res.result.code !== 0) {
         wx.hideLoading();

@@ -38,7 +38,7 @@ export default class PricePopup extends Component {
       return;
     }
 
-    if (left < popupState.num) {
+    if (left < popupState.num || left === 0 || popupState.num === 0) {
       wx.showToast({
         title: '库存不足',
         icon: 'none',
