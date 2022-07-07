@@ -60,15 +60,26 @@ exports.main = async (event, context) => {
       })
       .get();
 
-    const result = itemList.data.map((item) => {
-      const id = item._id;
-      const num = order.list.filter((e) => e.itemId === id).length;
+    // const result = itemList.data.map((item) => {
+    //   const id = item._id;
+    //   const num = order.list.filter((e) => e.itemId === id).length;
+    //   return {
+    //     num,
+    //     _id: item._id,
+    //     name: item.name,
+    //     pic: item.pic,
+    //     level: item.level,
+    //   };
+    // });
+    const result = order.list.map((item) => {
+      const id = item.itemId;
+      const it = itemList.data.find((e) => e._id === id);
       return {
-        num,
-        _id: item._id,
-        name: item.name,
-        pic: item.pic,
-        level: item.level,
+        num: item.num,
+        _id: it._id,
+        name: it.name,
+        pic: it.pic,
+        level: it.level,
       };
     });
 

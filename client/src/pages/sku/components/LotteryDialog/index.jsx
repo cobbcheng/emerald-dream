@@ -1,7 +1,8 @@
 import { Component } from 'react';
-import { View, Image } from '@tarojs/components';
+import { View, Image, ScrollView } from '@tarojs/components';
 import { observer, inject } from 'mobx-react';
 import { Overlay } from '@antmjs/vantui';
+import { If, Then } from 'react-if';
 import './index.less';
 
 @inject('store')
@@ -23,8 +24,13 @@ export default class LotteryDialog extends Component {
     return sorted[sorted.length - 1].pic;
   }
 
+  get imgLength() {
+    const { lotteryDialogInfo } = this.props.store.sku;
+    return lotteryDialogInfo.length;
+  }
+
   render() {
-    const { lotteryDialogVisible, hideLotteryDialog } = this.props.store.sku;
+    const { lotteryDialogVisible, hideLotteryDialog, lotteryDialogInfo } = this.props.store.sku;
     return (
       <Overlay show={lotteryDialogVisible}>
         <View>
@@ -35,7 +41,33 @@ export default class LotteryDialog extends Component {
             ></Image>
           </View>
           <View className="lottery-main">
-            <Image className="lottery-main-img" src={this.dialogImg}></Image>
+            <If condition={this.imgLength > 3}>
+              <Then>
+                <ScrollView scrollY scrollWithAnimation className="lottery-main-box">
+                  {lotteryDialogInfo.map((item) => (
+                    <Image className="lottery-main-img" src={item.pic}></Image>
+                  ))}
+                </ScrollView>
+              </Then>
+            </If>
+            <If condition={this.imgLength <= 3 && this.imgLength > 1}>
+              <Then>
+                <View className="lottery-main-box lottery-main-flex">
+                  {lotteryDialogInfo.map((item) => (
+                    <Image className="lottery-main-img3" src={item.pic}></Image>
+                  ))}
+                </View>
+              </Then>
+            </If>
+            <If condition={this.imgLength <= 1}>
+              <Then>
+                <View className="lottery-main-box">
+                  {lotteryDialogInfo.map((item) => (
+                    <Image className="lottery-main-img1" src={item.pic}></Image>
+                  ))}
+                </View>
+              </Then>
+            </If>
           </View>
           <View className="lottery-btn" onClick={hideLotteryDialog}>
             收入赏袋
