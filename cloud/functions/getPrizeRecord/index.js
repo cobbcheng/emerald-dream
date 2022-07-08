@@ -30,6 +30,9 @@ exports.main = async (event, context) => {
       foreignField: '_id',
       as: 'item',
     })
+    .sort({
+      _createTime: -1,
+    })
     .skip((page - 1) * 20)
     .limit(20)
     .end();
